@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-25",
+  "coordinator": "codex_local",
+  "background_commit": "e22a23796f34106ced8575cb3cd95f6aed863061",
+  "purpose": "R3-C shared reading snapshot and task brief; no experimental results",
+  "normalization": "UTF-8; LF; R3 snapshots have one final newline; opinions were not rewritten",
+  "sources": [
+    {
+      "participant": "chatgpt_web",
+      "comment_id": 6393269716,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6393269716",
+      "snapshot_path": "r3_snapshots/chatgpt_web.md"
+    },
+    {
+      "participant": "zcode_local",
+      "comment_id": 6393245949,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6393245949",
+      "snapshot_path": "r3_snapshots/zcode_local.md"
+    },
+    {
+      "participant": "codex_local",
+      "comment_id": 6393347948,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6393347948",
+      "snapshot_path": "r3_snapshots/codex_local.md"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "8a474f106a2fee4f4437998438af4475d41b24c1ca032aee0679af56c627676c",
+      "bytes": 8190,
+      "origin": "new_coordinator_document"
+    },
+    {
+      "path": "evidence_note.md",
+      "sha256": "5c59e1623a6d69c7cb3b0d9de8b0c3a982f5e1071fb5380a28ea3fe0f5ba8a8f",
+      "bytes": 9015,
+      "origin": "new_coordinator_document"
+    },
+    {
+      "path": "r3_snapshots/chatgpt_web.md",
+      "sha256": "c5d5221945b803ca37a505361a1b7a3594b6b8db4d0275987008b00368a36cc2",
+      "bytes": 10411,
+      "origin": "public_issue_comment_snapshot"
+    },
+    {
+      "path": "r3_snapshots/zcode_local.md",
+      "sha256": "962223979ec65ad3eed6e051cc300caf9d2a20cfe58aa788e57ad7a378840e03",
+      "bytes": 11457,
+      "origin": "public_issue_comment_snapshot"
+    },
+    {
+      "path": "r3_snapshots/codex_local.md",
+      "sha256": "7a20cbbf29c5f1a8fa26aa3a4b96f781cd6e49998ee9a0473336f1c5b715c18e",
+      "bytes": 17819,
+      "origin": "public_issue_comment_snapshot"
+    }
+  ],
+  "note": "Checksums cover the five listed files; this manifest is not self-hashed. Private data and deployment material are excluded."
+}
