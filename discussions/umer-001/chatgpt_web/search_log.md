@@ -47,7 +47,7 @@
 | P08 | Event Augmentations，SIGIR 2021：[DOI](https://doi.org/10.1145/3404835.3463001) | 出版元数据与摘要 | **正文未精读**；记为事件增强相关工作而非“已排除创新” |
 | P09 | Can We Identify Stance without Target Arguments? LREC-COLING 2024：[ACL 页面](https://aclanthology.org/2024.lrec-main.253/) | 摘要/任务定义 | 任务为 stance，不与事件 rumor 二分类直接对应，**范围排除** |
 | P10 | Knowledge Graphs for Real-World Rumour Verification，LREC-COLING 2024：[ACL 页面](https://aclanthology.org/2024.lrec-main.860/) | 摘要/任务定义 | 开放外部证据验证，**范围排除** |
-| P11 | Findings ACL 2024 LLM 立场方向：[ACL 页面](https://aclanthology.org/2024.findings-acl.796/) | 搜索命中、摘要/任务 | LLM 相关、非本轮主线，**范围排除** |
+| P11 | Findings ACL 2024 Reinforcement Tuning for Detecting Stances and Debunking Rumors Jointly with Large Language Models：[ACL 页面](https://aclanthology.org/2024.findings-acl.796/) | 搜索命中、摘要/任务 | LLM 相关、非本轮主线，**范围排除** |
 
 ## 4. 筛选与排除原则
 
