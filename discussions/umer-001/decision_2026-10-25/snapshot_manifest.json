@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-25",
+  "coordinator": "codex_local",
+  "shared_input_commit": "f812bf94cf822cf611a333b74c63648a0fad0a78",
+  "normalization": "UTF-8; LF; one final newline; participant opinions unchanged",
+  "sources": [
+    {
+      "participant": "codex_local",
+      "comment_id": 6394331978,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6394331978",
+      "snapshot_path": "r3c_snapshots/codex_local.md"
+    },
+    {
+      "participant": "chatgpt_web",
+      "comment_id": 6394364686,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6394364686",
+      "snapshot_path": "r3c_snapshots/chatgpt_web.md"
+    },
+    {
+      "participant": "zcode_local",
+      "comment_id": 6394382492,
+      "source_url": "https://github.com/Ethan-Martinez-creater/UMER_MODIFIED/issues/1#issuecomment-6394382492",
+      "snapshot_path": "r3c_snapshots/zcode_local.md"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "1186f25b3a2686e56ab3a0768c356be7e2ea43d144a27b338c23e1210edc8b4a",
+      "bytes": 10932,
+      "origin": "new_coordinator_synthesis"
+    },
+    {
+      "path": "r3c_snapshots/codex_local.md",
+      "sha256": "5559051263da79a9435e32b084eaed3dd44c6be53e7b17022475dc1cc39ae094",
+      "bytes": 5745,
+      "origin": "public_issue_comment_snapshot"
+    },
+    {
+      "path": "r3c_snapshots/chatgpt_web.md",
+      "sha256": "3c6d66279108db0cbfb74aa9a50c600bc97510b144e03767e6bbca8301bc4f0c",
+      "bytes": 6140,
+      "origin": "public_issue_comment_snapshot"
+    },
+    {
+      "path": "r3c_snapshots/zcode_local.md",
+      "sha256": "2582e4c67d1e06d1e050103fc4728a67f40593f331cdd5442c97b0a41ca48110",
+      "bytes": 6862,
+      "origin": "public_issue_comment_snapshot"
+    }
+  ],
+  "note": "Only the four listed files are checksummed; no self-hash. No experimental results or private deployment/data artifacts."
+}
