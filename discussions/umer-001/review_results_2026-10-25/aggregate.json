@@ -1,0 +1,1288 @@
+{
+  "packet_id": "UMER001-R4S-v1",
+  "packet_sha256": "ef974a7f5fff8cd25387a4fe245f8baaaf7651eac2219ae8572662cfc34f22a1",
+  "reviewers": 3,
+  "validation": {
+    "all_schema_and_coverage_pass": true,
+    "schema_validator": "local implementation of used JSON Schema keywords",
+    "quote_non_substring_count": 0
+  },
+  "units": {
+    "hosts": 12,
+    "pairs": 24,
+    "candidate_instances": 48,
+    "ratings": 144,
+    "inference_unit": "host/event; descriptive only"
+  },
+  "all": {
+    "candidate_instances": 48,
+    "hosts": 12,
+    "fields": {
+      "reaction_target": {
+        "agreement": {
+          "all_three_agree": 34,
+          "all_three_different": 1,
+          "two_agree": 13
+        },
+        "per_agent": {
+          "agent_a": {
+            "event": 29,
+            "generic_or_unclear": 12,
+            "other_object": 7
+          },
+          "agent_b": {
+            "event": 23,
+            "generic_or_unclear": 14,
+            "other_object": 11
+          },
+          "agent_c": {
+            "event": 21,
+            "generic_or_unclear": 21,
+            "other_object": 6
+          }
+        },
+        "unanimous_values": {
+          "event": 19,
+          "generic_or_unclear": 10,
+          "other_object": 5
+        }
+      },
+      "relevance": {
+        "agreement": {
+          "all_three_agree": 34,
+          "two_agree": 14
+        },
+        "per_agent": {
+          "agent_a": {
+            "off_topic": 7,
+            "related": 29,
+            "unclear": 12
+          },
+          "agent_b": {
+            "off_topic": 8,
+            "related": 23,
+            "unclear": 17
+          },
+          "agent_c": {
+            "off_topic": 5,
+            "related": 21,
+            "unclear": 22
+          }
+        },
+        "unanimous_values": {
+          "off_topic": 4,
+          "related": 19,
+          "unclear": 11
+        }
+      },
+      "adds_event_information": {
+        "agreement": {
+          "all_three_agree": 45,
+          "two_agree": 3
+        },
+        "per_agent": {
+          "agent_a": {
+            "no": 42,
+            "unclear": 3,
+            "yes": 3
+          },
+          "agent_b": {
+            "no": 43,
+            "unclear": 3,
+            "yes": 2
+          },
+          "agent_c": {
+            "no": 42,
+            "unclear": 4,
+            "yes": 2
+          }
+        },
+        "unanimous_values": {
+          "no": 41,
+          "unclear": 3,
+          "yes": 1
+        }
+      },
+      "emotion_intensity": {
+        "agreement": {
+          "two_agree": 11,
+          "all_three_agree": 37
+        },
+        "per_agent": {
+          "agent_a": {
+            "high": 10,
+            "low": 35,
+            "unclear": 3
+          },
+          "agent_b": {
+            "high": 12,
+            "low": 32,
+            "unclear": 4
+          },
+          "agent_c": {
+            "high": 15,
+            "low": 32,
+            "unclear": 1
+          }
+        },
+        "unanimous_values": {
+          "high": 9,
+          "low": 27,
+          "unclear": 1
+        }
+      },
+      "in_context_naturalness": {
+        "agreement": {
+          "two_agree": 14,
+          "all_three_agree": 33,
+          "all_three_different": 1
+        },
+        "per_agent": {
+          "agent_a": {
+            "awkward": 6,
+            "natural": 36,
+            "unclear": 6
+          },
+          "agent_b": {
+            "awkward": 8,
+            "natural": 30,
+            "unclear": 10
+          },
+          "agent_c": {
+            "awkward": 4,
+            "natural": 30,
+            "unclear": 14
+          }
+        },
+        "unanimous_values": {
+          "awkward": 3,
+          "natural": 26,
+          "unclear": 4
+        }
+      },
+      "confidence": {
+        "agreement": {
+          "two_agree": 28,
+          "all_three_different": 4,
+          "all_three_agree": 16
+        },
+        "per_agent": {
+          "agent_a": {
+            "high": 19,
+            "low": 14,
+            "medium": 15
+          },
+          "agent_b": {
+            "high": 11,
+            "low": 21,
+            "medium": 16
+          },
+          "agent_c": {
+            "high": 20,
+            "low": 10,
+            "medium": 18
+          }
+        },
+        "unanimous_values": {
+          "high": 9,
+          "low": 5,
+          "medium": 2
+        }
+      },
+      "context_sufficient": {
+        "agreement": {
+          "all_three_agree": 36,
+          "two_agree": 12
+        },
+        "per_agent": {
+          "agent_a": {
+            "no": 22,
+            "yes": 26
+          },
+          "agent_b": {
+            "no": 23,
+            "yes": 25
+          },
+          "agent_c": {
+            "no": 23,
+            "yes": 25
+          }
+        },
+        "unanimous_values": {
+          "no": 17,
+          "yes": 19
+        }
+      },
+      "redaction_impairs_judgment": {
+        "agreement": {
+          "two_agree": 17,
+          "all_three_agree": 31
+        },
+        "per_agent": {
+          "agent_a": {
+            "no": 47,
+            "yes": 1
+          },
+          "agent_b": {
+            "no": 31,
+            "yes": 17
+          },
+          "agent_c": {
+            "no": 43,
+            "yes": 5
+          }
+        },
+        "unanimous_values": {
+          "no": 31
+        }
+      }
+    },
+    "high_unanimous_relevance": 9,
+    "strict_descriptive_silver": 9,
+    "strict_silver_relevance": {
+      "off_topic": 2,
+      "related": 7
+    }
+  },
+  "by_dataset": {
+    "pheme": {
+      "candidate_instances": 24,
+      "hosts": 6,
+      "fields": {
+        "reaction_target": {
+          "agreement": {
+            "all_three_agree": 14,
+            "all_three_different": 1,
+            "two_agree": 9
+          },
+          "per_agent": {
+            "agent_a": {
+              "event": 15,
+              "generic_or_unclear": 6,
+              "other_object": 3
+            },
+            "agent_b": {
+              "event": 9,
+              "generic_or_unclear": 8,
+              "other_object": 7
+            },
+            "agent_c": {
+              "event": 8,
+              "generic_or_unclear": 13,
+              "other_object": 3
+            }
+          },
+          "unanimous_values": {
+            "event": 7,
+            "generic_or_unclear": 5,
+            "other_object": 2
+          }
+        },
+        "relevance": {
+          "agreement": {
+            "all_three_agree": 14,
+            "two_agree": 10
+          },
+          "per_agent": {
+            "agent_a": {
+              "off_topic": 3,
+              "related": 15,
+              "unclear": 6
+            },
+            "agent_b": {
+              "off_topic": 4,
+              "related": 9,
+              "unclear": 11
+            },
+            "agent_c": {
+              "off_topic": 2,
+              "related": 8,
+              "unclear": 14
+            }
+          },
+          "unanimous_values": {
+            "off_topic": 1,
+            "related": 7,
+            "unclear": 6
+          }
+        },
+        "adds_event_information": {
+          "agreement": {
+            "all_three_agree": 21,
+            "two_agree": 3
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 18,
+              "unclear": 3,
+              "yes": 3
+            },
+            "agent_b": {
+              "no": 19,
+              "unclear": 3,
+              "yes": 2
+            },
+            "agent_c": {
+              "no": 18,
+              "unclear": 4,
+              "yes": 2
+            }
+          },
+          "unanimous_values": {
+            "no": 17,
+            "unclear": 3,
+            "yes": 1
+          }
+        },
+        "emotion_intensity": {
+          "agreement": {
+            "two_agree": 4,
+            "all_three_agree": 20
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 6,
+              "low": 17,
+              "unclear": 1
+            },
+            "agent_b": {
+              "high": 5,
+              "low": 17,
+              "unclear": 2
+            },
+            "agent_c": {
+              "high": 7,
+              "low": 16,
+              "unclear": 1
+            }
+          },
+          "unanimous_values": {
+            "high": 5,
+            "low": 14,
+            "unclear": 1
+          }
+        },
+        "in_context_naturalness": {
+          "agreement": {
+            "two_agree": 8,
+            "all_three_agree": 15,
+            "all_three_different": 1
+          },
+          "per_agent": {
+            "agent_a": {
+              "awkward": 1,
+              "natural": 17,
+              "unclear": 6
+            },
+            "agent_b": {
+              "awkward": 4,
+              "natural": 14,
+              "unclear": 6
+            },
+            "agent_c": {
+              "awkward": 1,
+              "natural": 12,
+              "unclear": 11
+            }
+          },
+          "unanimous_values": {
+            "natural": 11,
+            "unclear": 4
+          }
+        },
+        "confidence": {
+          "agreement": {
+            "two_agree": 14,
+            "all_three_different": 1,
+            "all_three_agree": 9
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 9,
+              "low": 8,
+              "medium": 7
+            },
+            "agent_b": {
+              "high": 4,
+              "low": 11,
+              "medium": 9
+            },
+            "agent_c": {
+              "high": 6,
+              "low": 8,
+              "medium": 10
+            }
+          },
+          "unanimous_values": {
+            "high": 3,
+            "low": 5,
+            "medium": 1
+          }
+        },
+        "context_sufficient": {
+          "agreement": {
+            "all_three_agree": 18,
+            "two_agree": 6
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 13,
+              "yes": 11
+            },
+            "agent_b": {
+              "no": 14,
+              "yes": 10
+            },
+            "agent_c": {
+              "no": 15,
+              "yes": 9
+            }
+          },
+          "unanimous_values": {
+            "no": 11,
+            "yes": 7
+          }
+        },
+        "redaction_impairs_judgment": {
+          "agreement": {
+            "two_agree": 11,
+            "all_three_agree": 13
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 23,
+              "yes": 1
+            },
+            "agent_b": {
+              "no": 13,
+              "yes": 11
+            },
+            "agent_c": {
+              "no": 20,
+              "yes": 4
+            }
+          },
+          "unanimous_values": {
+            "no": 13
+          }
+        }
+      },
+      "high_unanimous_relevance": 3,
+      "strict_descriptive_silver": 3,
+      "strict_silver_relevance": {
+        "related": 3
+      }
+    },
+    "maweibo": {
+      "candidate_instances": 24,
+      "hosts": 6,
+      "fields": {
+        "reaction_target": {
+          "agreement": {
+            "all_three_agree": 20,
+            "two_agree": 4
+          },
+          "per_agent": {
+            "agent_a": {
+              "event": 14,
+              "generic_or_unclear": 6,
+              "other_object": 4
+            },
+            "agent_b": {
+              "event": 14,
+              "generic_or_unclear": 6,
+              "other_object": 4
+            },
+            "agent_c": {
+              "event": 13,
+              "generic_or_unclear": 8,
+              "other_object": 3
+            }
+          },
+          "unanimous_values": {
+            "event": 12,
+            "generic_or_unclear": 5,
+            "other_object": 3
+          }
+        },
+        "relevance": {
+          "agreement": {
+            "all_three_agree": 20,
+            "two_agree": 4
+          },
+          "per_agent": {
+            "agent_a": {
+              "off_topic": 4,
+              "related": 14,
+              "unclear": 6
+            },
+            "agent_b": {
+              "off_topic": 4,
+              "related": 14,
+              "unclear": 6
+            },
+            "agent_c": {
+              "off_topic": 3,
+              "related": 13,
+              "unclear": 8
+            }
+          },
+          "unanimous_values": {
+            "off_topic": 3,
+            "related": 12,
+            "unclear": 5
+          }
+        },
+        "adds_event_information": {
+          "agreement": {
+            "all_three_agree": 24
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 24
+            },
+            "agent_b": {
+              "no": 24
+            },
+            "agent_c": {
+              "no": 24
+            }
+          },
+          "unanimous_values": {
+            "no": 24
+          }
+        },
+        "emotion_intensity": {
+          "agreement": {
+            "all_three_agree": 17,
+            "two_agree": 7
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 4,
+              "low": 18,
+              "unclear": 2
+            },
+            "agent_b": {
+              "high": 7,
+              "low": 15,
+              "unclear": 2
+            },
+            "agent_c": {
+              "high": 8,
+              "low": 16
+            }
+          },
+          "unanimous_values": {
+            "high": 4,
+            "low": 13
+          }
+        },
+        "in_context_naturalness": {
+          "agreement": {
+            "all_three_agree": 18,
+            "two_agree": 6
+          },
+          "per_agent": {
+            "agent_a": {
+              "awkward": 5,
+              "natural": 19
+            },
+            "agent_b": {
+              "awkward": 4,
+              "natural": 16,
+              "unclear": 4
+            },
+            "agent_c": {
+              "awkward": 3,
+              "natural": 18,
+              "unclear": 3
+            }
+          },
+          "unanimous_values": {
+            "awkward": 3,
+            "natural": 15
+          }
+        },
+        "confidence": {
+          "agreement": {
+            "two_agree": 14,
+            "all_three_agree": 7,
+            "all_three_different": 3
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 10,
+              "low": 6,
+              "medium": 8
+            },
+            "agent_b": {
+              "high": 7,
+              "low": 10,
+              "medium": 7
+            },
+            "agent_c": {
+              "high": 14,
+              "low": 2,
+              "medium": 8
+            }
+          },
+          "unanimous_values": {
+            "high": 6,
+            "medium": 1
+          }
+        },
+        "context_sufficient": {
+          "agreement": {
+            "two_agree": 6,
+            "all_three_agree": 18
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 9,
+              "yes": 15
+            },
+            "agent_b": {
+              "no": 9,
+              "yes": 15
+            },
+            "agent_c": {
+              "no": 8,
+              "yes": 16
+            }
+          },
+          "unanimous_values": {
+            "no": 6,
+            "yes": 12
+          }
+        },
+        "redaction_impairs_judgment": {
+          "agreement": {
+            "all_three_agree": 18,
+            "two_agree": 6
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 24
+            },
+            "agent_b": {
+              "no": 18,
+              "yes": 6
+            },
+            "agent_c": {
+              "no": 23,
+              "yes": 1
+            }
+          },
+          "unanimous_values": {
+            "no": 18
+          }
+        }
+      },
+      "high_unanimous_relevance": 6,
+      "strict_descriptive_silver": 6,
+      "strict_silver_relevance": {
+        "off_topic": 2,
+        "related": 4
+      }
+    }
+  },
+  "by_origin": {
+    "same_event_reserved": {
+      "candidate_instances": 24,
+      "hosts": 12,
+      "fields": {
+        "reaction_target": {
+          "agreement": {
+            "all_three_different": 1,
+            "two_agree": 4,
+            "all_three_agree": 19
+          },
+          "per_agent": {
+            "agent_a": {
+              "event": 22,
+              "generic_or_unclear": 2
+            },
+            "agent_b": {
+              "event": 18,
+              "generic_or_unclear": 5,
+              "other_object": 1
+            },
+            "agent_c": {
+              "event": 18,
+              "generic_or_unclear": 6
+            }
+          },
+          "unanimous_values": {
+            "event": 17,
+            "generic_or_unclear": 2
+          }
+        },
+        "relevance": {
+          "agreement": {
+            "two_agree": 5,
+            "all_three_agree": 19
+          },
+          "per_agent": {
+            "agent_a": {
+              "related": 22,
+              "unclear": 2
+            },
+            "agent_b": {
+              "related": 18,
+              "unclear": 6
+            },
+            "agent_c": {
+              "related": 18,
+              "unclear": 6
+            }
+          },
+          "unanimous_values": {
+            "related": 17,
+            "unclear": 2
+          }
+        },
+        "adds_event_information": {
+          "agreement": {
+            "all_three_agree": 23,
+            "two_agree": 1
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 22,
+              "unclear": 1,
+              "yes": 1
+            },
+            "agent_b": {
+              "no": 22,
+              "unclear": 1,
+              "yes": 1
+            },
+            "agent_c": {
+              "no": 21,
+              "unclear": 1,
+              "yes": 2
+            }
+          },
+          "unanimous_values": {
+            "no": 21,
+            "unclear": 1,
+            "yes": 1
+          }
+        },
+        "emotion_intensity": {
+          "agreement": {
+            "all_three_agree": 21,
+            "two_agree": 3
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 6,
+              "low": 16,
+              "unclear": 2
+            },
+            "agent_b": {
+              "high": 6,
+              "low": 16,
+              "unclear": 2
+            },
+            "agent_c": {
+              "high": 7,
+              "low": 16,
+              "unclear": 1
+            }
+          },
+          "unanimous_values": {
+            "high": 6,
+            "low": 14,
+            "unclear": 1
+          }
+        },
+        "in_context_naturalness": {
+          "agreement": {
+            "two_agree": 4,
+            "all_three_agree": 20
+          },
+          "per_agent": {
+            "agent_a": {
+              "natural": 23,
+              "unclear": 1
+            },
+            "agent_b": {
+              "natural": 20,
+              "unclear": 4
+            },
+            "agent_c": {
+              "natural": 22,
+              "unclear": 2
+            }
+          },
+          "unanimous_values": {
+            "natural": 19,
+            "unclear": 1
+          }
+        },
+        "confidence": {
+          "agreement": {
+            "two_agree": 13,
+            "all_three_agree": 8,
+            "all_three_different": 3
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 15,
+              "low": 2,
+              "medium": 7
+            },
+            "agent_b": {
+              "high": 7,
+              "low": 8,
+              "medium": 9
+            },
+            "agent_c": {
+              "high": 16,
+              "low": 2,
+              "medium": 6
+            }
+          },
+          "unanimous_values": {
+            "high": 7,
+            "low": 1
+          }
+        },
+        "context_sufficient": {
+          "agreement": {
+            "all_three_agree": 20,
+            "two_agree": 4
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 5,
+              "yes": 19
+            },
+            "agent_b": {
+              "no": 8,
+              "yes": 16
+            },
+            "agent_c": {
+              "no": 6,
+              "yes": 18
+            }
+          },
+          "unanimous_values": {
+            "no": 5,
+            "yes": 15
+          }
+        },
+        "redaction_impairs_judgment": {
+          "agreement": {
+            "two_agree": 6,
+            "all_three_agree": 18
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 24
+            },
+            "agent_b": {
+              "no": 18,
+              "yes": 6
+            },
+            "agent_c": {
+              "no": 22,
+              "yes": 2
+            }
+          },
+          "unanimous_values": {
+            "no": 18
+          }
+        }
+      },
+      "high_unanimous_relevance": 7,
+      "strict_descriptive_silver": 7,
+      "strict_silver_relevance": {
+        "related": 7
+      }
+    },
+    "training_event_donor": {
+      "candidate_instances": 24,
+      "hosts": 12,
+      "fields": {
+        "reaction_target": {
+          "agreement": {
+            "all_three_agree": 15,
+            "two_agree": 9
+          },
+          "per_agent": {
+            "agent_a": {
+              "event": 7,
+              "generic_or_unclear": 10,
+              "other_object": 7
+            },
+            "agent_b": {
+              "event": 5,
+              "generic_or_unclear": 9,
+              "other_object": 10
+            },
+            "agent_c": {
+              "event": 3,
+              "generic_or_unclear": 15,
+              "other_object": 6
+            }
+          },
+          "unanimous_values": {
+            "event": 2,
+            "generic_or_unclear": 8,
+            "other_object": 5
+          }
+        },
+        "relevance": {
+          "agreement": {
+            "all_three_agree": 15,
+            "two_agree": 9
+          },
+          "per_agent": {
+            "agent_a": {
+              "off_topic": 7,
+              "related": 7,
+              "unclear": 10
+            },
+            "agent_b": {
+              "off_topic": 8,
+              "related": 5,
+              "unclear": 11
+            },
+            "agent_c": {
+              "off_topic": 5,
+              "related": 3,
+              "unclear": 16
+            }
+          },
+          "unanimous_values": {
+            "off_topic": 4,
+            "related": 2,
+            "unclear": 9
+          }
+        },
+        "adds_event_information": {
+          "agreement": {
+            "all_three_agree": 22,
+            "two_agree": 2
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 20,
+              "unclear": 2,
+              "yes": 2
+            },
+            "agent_b": {
+              "no": 21,
+              "unclear": 2,
+              "yes": 1
+            },
+            "agent_c": {
+              "no": 21,
+              "unclear": 3
+            }
+          },
+          "unanimous_values": {
+            "no": 20,
+            "unclear": 2
+          }
+        },
+        "emotion_intensity": {
+          "agreement": {
+            "two_agree": 8,
+            "all_three_agree": 16
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 4,
+              "low": 19,
+              "unclear": 1
+            },
+            "agent_b": {
+              "high": 6,
+              "low": 16,
+              "unclear": 2
+            },
+            "agent_c": {
+              "high": 8,
+              "low": 16
+            }
+          },
+          "unanimous_values": {
+            "high": 3,
+            "low": 13
+          }
+        },
+        "in_context_naturalness": {
+          "agreement": {
+            "two_agree": 10,
+            "all_three_agree": 13,
+            "all_three_different": 1
+          },
+          "per_agent": {
+            "agent_a": {
+              "awkward": 6,
+              "natural": 13,
+              "unclear": 5
+            },
+            "agent_b": {
+              "awkward": 8,
+              "natural": 10,
+              "unclear": 6
+            },
+            "agent_c": {
+              "awkward": 4,
+              "natural": 8,
+              "unclear": 12
+            }
+          },
+          "unanimous_values": {
+            "awkward": 3,
+            "natural": 7,
+            "unclear": 3
+          }
+        },
+        "confidence": {
+          "agreement": {
+            "two_agree": 15,
+            "all_three_different": 1,
+            "all_three_agree": 8
+          },
+          "per_agent": {
+            "agent_a": {
+              "high": 4,
+              "low": 12,
+              "medium": 8
+            },
+            "agent_b": {
+              "high": 4,
+              "low": 13,
+              "medium": 7
+            },
+            "agent_c": {
+              "high": 4,
+              "low": 8,
+              "medium": 12
+            }
+          },
+          "unanimous_values": {
+            "high": 2,
+            "low": 4,
+            "medium": 2
+          }
+        },
+        "context_sufficient": {
+          "agreement": {
+            "all_three_agree": 16,
+            "two_agree": 8
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 17,
+              "yes": 7
+            },
+            "agent_b": {
+              "no": 15,
+              "yes": 9
+            },
+            "agent_c": {
+              "no": 17,
+              "yes": 7
+            }
+          },
+          "unanimous_values": {
+            "no": 12,
+            "yes": 4
+          }
+        },
+        "redaction_impairs_judgment": {
+          "agreement": {
+            "two_agree": 11,
+            "all_three_agree": 13
+          },
+          "per_agent": {
+            "agent_a": {
+              "no": 23,
+              "yes": 1
+            },
+            "agent_b": {
+              "no": 13,
+              "yes": 11
+            },
+            "agent_c": {
+              "no": 21,
+              "yes": 3
+            }
+          },
+          "unanimous_values": {
+            "no": 13
+          }
+        }
+      },
+      "high_unanimous_relevance": 2,
+      "strict_descriptive_silver": 2,
+      "strict_silver_relevance": {
+        "off_topic": 2
+      }
+    }
+  },
+  "pairs": {
+    "all": {
+      "unanimous_related_offtopic_pair": {
+        "pairs": 2,
+        "hosts": 2
+      },
+      "high_confidence_pair": {
+        "pairs": 1,
+        "hosts": 1
+      },
+      "strict_descriptive_silver_pair": {
+        "pairs": 1,
+        "hosts": 1
+      },
+      "strict_pair_both_all_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_both_majority_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_offtopic_all_awkward": {
+        "pairs": 1,
+        "hosts": 1
+      }
+    },
+    "pheme": {
+      "unanimous_related_offtopic_pair": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "high_confidence_pair": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_descriptive_silver_pair": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_both_all_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_both_majority_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_offtopic_all_awkward": {
+        "pairs": 0,
+        "hosts": 0
+      }
+    },
+    "maweibo": {
+      "unanimous_related_offtopic_pair": {
+        "pairs": 2,
+        "hosts": 2
+      },
+      "high_confidence_pair": {
+        "pairs": 1,
+        "hosts": 1
+      },
+      "strict_descriptive_silver_pair": {
+        "pairs": 1,
+        "hosts": 1
+      },
+      "strict_pair_both_all_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_both_majority_natural": {
+        "pairs": 0,
+        "hosts": 0
+      },
+      "strict_pair_offtopic_all_awkward": {
+        "pairs": 1,
+        "hosts": 1
+      }
+    }
+  },
+  "pairwise_agreement_counts": {
+    "reaction_target": {
+      "agent_a__agent_b": 39,
+      "agent_a__agent_c": 38,
+      "agent_b__agent_c": 38
+    },
+    "relevance": {
+      "agent_a__agent_b": 40,
+      "agent_a__agent_c": 37,
+      "agent_b__agent_c": 39
+    },
+    "adds_event_information": {
+      "agent_a__agent_b": 47,
+      "agent_a__agent_c": 45,
+      "agent_b__agent_c": 46
+    },
+    "emotion_intensity": {
+      "agent_a__agent_b": 41,
+      "agent_a__agent_c": 39,
+      "agent_b__agent_c": 42
+    },
+    "in_context_naturalness": {
+      "agent_a__agent_b": 38,
+      "agent_a__agent_c": 39,
+      "agent_b__agent_c": 36
+    },
+    "confidence": {
+      "agent_a__agent_b": 25,
+      "agent_a__agent_c": 28,
+      "agent_b__agent_c": 23
+    },
+    "context_sufficient": {
+      "agent_a__agent_b": 41,
+      "agent_a__agent_c": 41,
+      "agent_b__agent_c": 38
+    },
+    "redaction_impairs_judgment": {
+      "agent_a__agent_b": 32,
+      "agent_a__agent_c": 42,
+      "agent_b__agent_c": 36
+    }
+  },
+  "hosts_with_all_four_relevance_unanimous": 4,
+  "no_human_gold": true,
+  "no_detector_predictions": true,
+  "strict_filter_status": "post-review descriptive conservative filter, not preregistered validity threshold",
+  "selection_stats": {
+    "pheme": {
+      "hosts": 6,
+      "pairs": 12,
+      "host_candidates_examined": 8,
+      "exclusions": {
+        "context_or_leaf_eligibility": 2
+      },
+      "donor_events_examined": 24,
+      "donor_posts_available": 77,
+      "donor_failures": {}
+    },
+    "maweibo": {
+      "hosts": 6,
+      "pairs": 12,
+      "host_candidates_examined": 6,
+      "exclusions": {},
+      "donor_events_examined": 24,
+      "donor_posts_available": 93,
+      "donor_failures": {}
+    }
+  },
+  "additional_descriptive_counts": {
+    "independent_recount_matches": true,
+    "any_unclear_relevance": 24,
+    "any_context_insufficient": 29,
+    "any_redaction_impairs": 17,
+    "unanimous_offtopic_all_natural": 0
+  },
+  "dataset_admission_status": "NOT_READY for current natural semantic-shift paired evaluation; not a method failure",
+  "protocol_commit": "2058bb1bdb8cdcfe4931fed5881cf3e4a5c30013"
+}

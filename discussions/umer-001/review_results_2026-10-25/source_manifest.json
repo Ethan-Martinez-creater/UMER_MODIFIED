@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-25",
+  "packet_id": "UMER001-R4S-v1",
+  "packet_sha256": "ef974a7f5fff8cd25387a4fe245f8baaaf7651eac2219ae8572662cfc34f22a1",
+  "protocol_commit": "2058bb1bdb8cdcfe4931fed5881cf3e4a5c30013",
+  "schema_sha256": "7adbb0b8d08b269bfbb56bc5d454e697fb64cff131d261a370af23b14aef9b69",
+  "reviews": [
+    {
+      "participant": "agent_a",
+      "sha256": "963bde7d46d94c59a5a7cd8e339c3eaa0a9d5faf2c62a40fb7de52c08ff7cf5f",
+      "bytes": 30983,
+      "pairs": 24,
+      "candidate_ratings": 48,
+      "schema_and_coverage_pass": true
+    },
+    {
+      "participant": "agent_b",
+      "sha256": "96db7757af4961e5ed2ff0453d1d9a403ea1d8d2abad7054831bf4be4b823d17",
+      "bytes": 28991,
+      "pairs": 24,
+      "candidate_ratings": 48,
+      "schema_and_coverage_pass": true
+    },
+    {
+      "participant": "agent_c",
+      "sha256": "3efedc4d8cc18cf683bb5a2cb623d3dea7864faa72ac778ec3fde9b98611a2f5",
+      "bytes": 33117,
+      "pairs": 24,
+      "candidate_ratings": 48,
+      "schema_and_coverage_pass": true
+    }
+  ],
+  "aggregation_code_sha256": "a09638c53d0986719d68ba3dabd05fc6c7c66850dc9dac2eb93cc7588029b2ba",
+  "aggregation_recipe": [
+    "Join by packet/pair/candidate keys and reject duplicate/missing keys.",
+    "For each field and candidate, count distinct reviewer values: 1=all agree; 2=two agree; 3=all different.",
+    "Retain unclear as its own value; never convert agreement to accuracy.",
+    "A related/off-topic pair requires unanimous opposite determinate labels for its two candidates.",
+    "High-confidence pair additionally requires all three confidence values high for each candidate.",
+    "Natural pair additionally requires all three naturalness values natural for each candidate.",
+    "Post-review strict descriptive filter additionally requires sufficient context, no redaction impact and exact evidence spans.",
+    "Report host counts separately; do not treat multiple pairs/reviewers as independent events."
+  ],
+  "raw_reviews_published": false,
+  "sample_text_published": false,
+  "case_identifiers_published": false,
+  "model_names_are_self_reported_only": true,
+  "human_gold": false,
+  "detector_forward_performed": false
+}
