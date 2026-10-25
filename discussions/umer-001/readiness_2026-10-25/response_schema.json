@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UMER001 blinded agent semantic screening response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id",
+    "packet_sha256",
+    "agent_id",
+    "model_self_report",
+    "reviews"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string"
+    },
+    "packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "agent_id": {
+      "enum": [
+        "agent_a",
+        "agent_b",
+        "agent_c"
+      ]
+    },
+    "model_self_report": {
+      "type": "string"
+    },
+    "reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pair_id",
+          "candidates"
+        ],
+        "properties": {
+          "pair_id": {
+            "type": "string",
+            "pattern": "^P[0-9]{3}$"
+          },
+          "candidates": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "candidate_id",
+                "reaction_target",
+                "relevance",
+                "adds_event_information",
+                "emotion_intensity",
+                "in_context_naturalness",
+                "confidence",
+                "context_sufficient",
+                "redaction_impairs_judgment",
+                "reason",
+                "evidence_span"
+              ],
+              "properties": {
+                "candidate_id": {
+                  "enum": [
+                    "A",
+                    "B"
+                  ]
+                },
+                "reaction_target": {
+                  "enum": [
+                    "event",
+                    "other_object",
+                    "generic_or_unclear"
+                  ]
+                },
+                "relevance": {
+                  "enum": [
+                    "related",
+                    "off_topic",
+                    "unclear"
+                  ]
+                },
+                "adds_event_information": {
+                  "enum": [
+                    "yes",
+                    "no",
+                    "unclear"
+                  ]
+                },
+                "emotion_intensity": {
+                  "enum": [
+                    "low",
+                    "high",
+                    "unclear"
+                  ]
+                },
+                "in_context_naturalness": {
+                  "enum": [
+                    "natural",
+                    "awkward",
+                    "unclear"
+                  ]
+                },
+                "confidence": {
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low"
+                  ]
+                },
+                "context_sufficient": {
+                  "enum": [
+                    "yes",
+                    "no"
+                  ]
+                },
+                "redaction_impairs_judgment": {
+                  "enum": [
+                    "yes",
+                    "no"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 300
+                },
+                "evidence_span": {
+                  "type": "string",
+                  "maxLength": 80
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
