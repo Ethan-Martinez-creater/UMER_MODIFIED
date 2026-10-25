@@ -1,0 +1,1121 @@
+\documentclass[sigconf,anonymous,review]{../acmart/acmart}
+
+\setcopyright{none}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{placeins}
+
+\newcommand{\method}{\textsc{UMER}}
+\newcommand{\jsd}{\operatorname{JSD}}
+\newcommand{\softmax}{\operatorname{softmax}}
+\newcommand{\norm}{\operatorname{norm}}
+\newcommand{\mean}{\operatorname{mean}}
+\newcommand{\maxpool}{\operatorname{max}}
+
+\acmConference[WSDM '27]
+  {the Twentieth ACM International Conference on Web Search and Data Mining}
+  {February 15--19, 2027}
+  {Hong Kong, China}
+\acmBooktitle{Proceedings of the Twentieth ACM International Conference
+  on Web Search and Data Mining (WSDM '27), February 15--19, 2027,
+  Hong Kong, China}
+\acmYear{2027}
+\acmDOI{}
+\acmISBN{}
+
+\begin{document}
+
+\title[UMER: Unified Multi-Evidence Learning for Rumor Detection]
+{UMER: Unified Multi-Evidence Learning for Social Rumor Detection with
+Cross-View Consistency and Cross-Event Context}
+
+\begin{abstract}
+Social rumor detection remains challenging because seemingly credible source
+content, sparse or noisy propagation structures, and incomplete reply
+observations may provide conflicting evidence. Existing methods often model
+semantic and propagation cues separately or combine independently trained
+predictors after training, limiting their ability to learn complementary
+evidence jointly. We propose UMER, a unified multi-evidence learning framework
+that jointly encodes event propagation and textual semantics while incorporating
+cross-event semantic context to complement event-local evidence. Cross-view
+consistency encourages two stochastic yet label-preserving serializations of
+the same conversation to produce consistent predictive distributions, while
+branch-level supervision prevents the unified fusion module from discarding
+either structural or textual evidence. To stabilize this heterogeneous
+objective under gradient accumulation, we introduce an exact-replay
+sharpness-aware optimization procedure that prevents stochastic view changes
+from contaminating sharpness estimation. Under fixed five-fold cross-validation
+on PHEME, UMER achieves an average accuracy of 0.8988, surpassing the strongest
+reproduced baseline by 2.97 percentage points. On Fold 5, where UMER obtains its
+highest accuracy of 0.9113, it exceeds the same baseline on the corresponding
+test fold by 4.69 percentage points. On Ma-Weibo, UMER reaches 0.9689 average
+accuracy, 1.20 percentage points above the strongest completed five-fold
+baseline. UMER produces a single jointly optimized checkpoint rather than
+relying on post-hoc combinations of independently trained predictors.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+ <concept>
+  <concept_id>10002951.10003227.10003236</concept_id>
+  <concept_desc>Information systems~Social networks</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Information systems~Social networks}
+
+\keywords{rumor detection, misinformation, graph representation learning,
+cross-event context, cross-view consistency, sharpness-aware minimization}
+
+\maketitle
+
+\section{Introduction}
+
+Social media has become an important channel for following breaking events,
+sharing eyewitness reports, and organizing public discussion. Its low
+publication barrier, however, also allows unverified claims to reach large
+audiences before professional verification becomes available. Large-scale
+empirical evidence shows that false information can diffuse farther, faster,
+deeper, and more broadly than verified truth~\cite{vosoughi2018spread}.
+Recent evidence also cautions that exposure is not uniformly distributed:
+the most consequential risks are concentrated among highly exposed groups
+and in the tail of the consumption distribution~\cite{budak2024harms}.
+This combination of rapid diffusion and uneven risk makes timely event-level
+detection important, particularly before high-impact cascades become
+established.
+
+Much of the evidence needed for detection emerges from the surrounding
+conversation. Replies may support, question, repeat, or supplement a claim,
+while reply links reveal whether reactions form a broad response around the
+source or develop into deeper discussion chains. User and temporal
+information further characterize who participates and how the conversation
+evolves. The PHEME study shows that users may support an unresolved claim
+regardless of its eventual veracity and that informative behavioral signals
+arise from the conversational thread as a whole~\cite{zubiaga2016pheme}.
+These evidence sources can nevertheless conflict: a linguistically plausible
+source may exhibit an unusual propagation pattern, whereas a sparse event
+may contain too little structural evidence to support a reliable decision.
+Such heterogeneity makes event-level representation particularly difficult
+across conversations with substantially different sizes and structures.
+
+Research has progressed from feature-engineered classifiers to sequential
+neural models, propagation-aware graph networks, and more recent augmentation
+and reconstruction objectives~\cite{castillo2011credibility,ma2016rnn,
+ma2018rvnn,bian2020bigcn,cui2024ragcl,wang2025adaat,
+wang2026seegraphmae}. Feature-engineered systems depend on predefined
+statistics, sequential models can obscure branching reply relations, and
+graph models remain bounded by the observed conversation structure.
+Augmentation and reconstruction improve robustness but cannot supply
+genuinely observed evidence when an event is structurally sparse. These
+limitations motivate jointly considering stable event semantics, propagation
+structure, and information available across related events.
+
+Pre-trained language models provide strong complementary capacity for event
+semantics. DeBERTa disentangles content and positional representations, while
+DeBERTaV3 improves pre-training through replaced-token detection and
+gradient-disentangled embedding sharing~\cite{he2021deberta,
+he2023debertav3}. A social-media event, however, generally contains more text
+than can be retained within a fixed input budget. Its representation
+therefore depends on which replies are selected, how they are ordered, and
+where truncation occurs; two label-preserving serializations of the same
+conversation can consequently produce different predictions. In addition,
+encoding each event independently does not explicitly reveal whether it is
+semantically close to previously observed rumor or non-rumor patterns.
+Sentence-level representations make such semantic neighborhoods
+measurable~\cite{reimers2019sbert}, suggesting that evidence from related
+events can complement event-local text and propagation signals.
+
+Bringing structural evidence, multiple text views, and cross-event semantic
+support into one detector introduces a further optimization challenge. These
+components are learned through multiple supervised objectives and stochastic
+event representations, whose variation becomes especially important under
+gradient accumulation. Prediction-level consistency methods such as
+R-Drop~\cite{liang2021rdrop} show that stochastic views can be regularized by
+encouraging agreement between their oant
+node-content encoding with a structural Transformer to represent
+conversations of varying sizes and topologies. The event-text channel encodes
+two label-preserving serializations using a shared DeBERTa-v3-large encoder
+and promotes agreement between their predictive distributions. The
+cross-event semantic channel estimates local class support from related
+reference events, providing additional evidence for ambiguous or structurally
+sparse conversations. A unified fusion head integrates the three decision
+signals, while branch-level supervision maintains the discriminative capacity
+of the parametric channels. Finally, exact-replay SAM preserves the same
+accumulated events, constructed views, and stochastic states across its two
+optimization passes.
+
+Our main contributions are threefold:
+
+\begin{itemize}
+  \item We propose a unified multi-evidence rumor detection architecture that
+  jointly models propagation structure, event-level language, and cross-event
+  semantic context within a single trainable model. The cross-event channel
+  provides explicit semantic support for events whose local textual or
+  structural evidence is insufficient.
+
+  \item We introduce a robust evidence-learning mechanism that combines
+  complementary graph readouts, label-preserving event serializations,
+  prediction-level cross-view consistency, and branch supervision. This
+  design improves stability under reply selection, ordering, and truncation
+  while maintaining the individual competence of the structural and textual
+  channels.
+
+  \item We develop an exact effective-batch SAM procedure for accumulated
+  multi-view training. By replaying event identities, constructed views, and
+  stochastic states, the procedure preserves the intended
+  parameter-neighborhood objective across the two SAM passes.
+\end{itemize}
+
+\section{Related Work}
+
+Research related to our work spans three connected questions: how to represent
+heterogeneous evidence within an event, how to obtain useful context beyond
+the event itself, and how to optimize the resulting stochastic multi-objective
+model reliably. We therefore review event content and propagation modeling,
+cross-event semantic context, and consistency and sharpness-aware learning in
+sequence.
+
+\subsection{Event Content, Propagation, and Joint Modeling}
+
+Early rumor detectors used manually constructed linguistic, user, temporal,
+and diffusion features~\cite{castillo2011credibility,ma2015svmts}. Recurrent
+models subsequently learned temporal representations directly from sequences
+of posts~\cite{ma2016rnn}, reducing dependence on predefined statistics but
+flattening the branching relations among replies. Pre-trained language models
+provide substantially stronger semantic representations. In particular,
+DeBERTa separates content and positional representations, and DeBERTaV3
+improves its pre-training objective through replaced-token detection and
+gradient-disentangled embedding sharing~\cite{he2021deberta,
+he2023debertav3}. Nevertheless, a language encoder still receives a finite
+serialization of an event, making its output sensitive to which replies are
+retained and how a branching conversation is ordered.
+
+Propagation models preserve information that is lost during such
+linearization. Bi-GCN applies graph convolution in top-down and bottom-up
+directions to capture both claim propagation and response
+dispersion~\cite{bian2020bigcn}. RAGCL adapts graph contrastive augmentation
+to the wide and shallow structures observed in rumor
+trees~\cite{cui2024ragcl}. Temporal propagation optimization and FGDGNN
+further model time intervals and graph evolution within and across
+snapshots~\cite{peng2025temporal,guo2025fgdgnn}. Robustness-oriented methods
+construct adaptive or adversarial graph views~\cite{wang2025adaat}, or recover
+masked local and global semantic-evolution patterns~\cite{wang2026seegraphmae}.
+These advances improve propagation representation, but the available signal
+remains bounded by the observed event graph and is consequently weak for
+source-only or extremely sparse conversations.
+
+Several methods jointly learn content and structural evidence. Rumor2vec
+combines source-text encoding with representations learned from a union graph
+that links the propagation structures of multiple events through shared
+network information~\cite{tu2021rumor2vec}. DUCK uses Transformers and graph
+attention networks to jointly model conversation content, comment
+propagation, and participating-user networks~\cite{tian2022duck}. TGA-CMF
+combines time-decayed graph attention with graph-guided textual fusion for
+early rumor detection~\cite{ding2026tgacmf}. These methods establish that
+end-to-end content--structure learning is effective and that joint training
+itself is not a new contribution. Their evidence, however, is primarily
+derived from the observed conversation, user connectivity, or temporal graph;
+they do not simultaneously address instability across valid event-text
+serializations and instance-level semantic support from related training
+events.
+
+\subsection{Cross-Event Semantic Context}
+
+Event-local encoders cannot directly express how a new conversation relates
+to previously observed events. Sentence-BERT demonstrates that semantically
+related texts can be organized into efficient cosine
+neighborhoods~\cite{reimers2019sbert}, but semantic similarity alone does not
+specify how information should be transferred between rumor events.
+
+Existing rumor studies use cross-event information mainly for transfer and
+generalization. Cross-topic rumor detection represents training topics and
+combines them according to the topic distribution of a target
+instance~\cite{ren2021crosstopic}. Few-shot cross-event detection instead
+learns class prototypes or relation metrics from historical events through
+episodic training and adapts them to novel events with a small number of
+labeled examples~\cite{ran2023metacross}. In an adjacent misinformation
+setting, cross-document event graph reasoning aggregates complementary and
+contradictory information from clusters of related news
+documents~\cite{wu2022crossdoc}. Rumor2vec also shares information across
+events, but does so through user and propagation connectivity rather than
+instance-level semantic neighborhoods~\cite{tu2021rumor2vec}.
+
+These approaches demonstrate the value of knowledge beyond an isolated event,
+but they target cross-topic transfer, few-shot adaptation, clustered external
+documents, or shared propagation networks. They leave open how to expose
+instance-level semantic precedent under ordinary event-level supervised
+evaluation while keeping the admissible reference set explicit and isolated
+from validation and test labels.
+
+\subsection{Consistency and Sharpness-Aware Optimization}
+
+Consistency regularization stabilizes predictions under stochastic
+perturbations. R-Drop evaluates the same input twice with independently
+sampled dropout masks and minimizes supervised loss together with a
+bidirectional KL divergence between the two output
+distributions~\cite{liang2021rdrop}. It therefore regularizes model-internal
+dropout variation, but does not directly address input-level changes caused by
+reply selection, ordering, or truncation. For two complete event
+serializations, Jensen--Shannon divergence offers a symmetric and bounded
+distribution-level constraint through their mean predictive distribution.
+The corresponding event-view construction and objective are specified in
+Section~\ref{sec:text}.
+
+Sharpness-Aware Minimization searches for parameters that retain low loss
+under a bounded parameter perturbation~\cite{foret2021sam}. Subsequent
+variants refine different aspects of this neighborhood. ASAM makes sharpness
+less sensitive to parameter rescaling by adapting the perturbation region to
+parameter magnitude~\cite{kwon2021asam}. GSAM explicitly reduces a surrogate
+gap associated with local curvature in addition to the perturbed
+loss~\cite{zhuang2022gsam}, whereas Fisher SAM replaces the Euclidean ball
+with an ellipsoid induced by Fisher information
+geometry~\cite{kim2022fishersam}. These variants improve the geometry or
+objective used to define sharpness, but they retain the requirement that the
+unperturbed and perturbed passes evaluate the same stochastic training
+objective.
+
+We use the original Euclidean SAM objective as a controlled base because it
+introduces neither layer-wise scaling, Fisher estimation, nor an additional
+surrogate-gradient decomposition. This choice isolates the issue addressed in
+our optimization design: preserving the exact effective batch and stochastic
+event realization across the two passes. Exact replay is orthogonal to the
+choice of neighborhood geometry and could in principle also be applied to
+adaptive or information-geometric SAM variants.
+
+Taken together, prior work provides strong event-local semantic and
+propagation encoders, mechanisms for cross-topic or cross-document transfer,
+and generic consistency or sharpness-aware regularization. Our work targets
+their intersection: one jointly optimized detector combines event-internal
+propagation and language evidence with explicit training-event semantic
+support, regularizes complete event serializations at the prediction level,
+and preserves the intended sharpness objective under accumulated stochastic
+training.
+
+\section{Methodology}
+\label{sec:method}
+
+This section presents \method\ from task definition to joint optimization.
+Section~\ref{sec:problem} formalizes event-level rumor detection and summarizes
+the notation.  Sections~\ref{sec:graph}--\ref{sec:context} describe the three
+evidence channels: propagation, cross-view text, and cross-event context.
+Section~\ref{sec:fusion} introduces decision-level fusion and its supervised
+objective, and Section~\ref{sec:sam} gives the exact-replay SAM procedure.
+
+\subsection{Problem Formulation}
+\label{sec:problem}
+
+Let an event be
+\begin{equation}
+  e_i=(G_i,X_i,S_i,y_i),
+  \qquad G_i=(V_i,E_i), \quad y_i\in\{0,1\},
+  \label{eq:event}
+\end{equation}
+where $G_i$ is a directed conversation graph, $V_i$ contains the source post
+and its replies, $E_i$ preserves reply relations, $X_i$ denotes node-level
+semantic and social attributes, and $S_i$ is a source-and-replies text
+serialization.  We use $y_i=1$ for rumor and $y_i=0$ for non-rumor.  Given an
+event set $\mathcal{D}$ and an admissible reference event bank $\mathcal{B}$,
+the objective is to learn one classifier
+\begin{equation}
+  f_{\theta}(e_i,\mathcal{B})
+  =\boldsymbol{p}_i\in[0,1]^2,\qquad
+  \sum_{c\in\{0,1\}}p_{i,c}=1.
+  \label{eq:classifier}
+\end{equation}
+Unlike a post-hoc ensemble, all parametric encoders and the fusion head are
+optimized as one model.  The bank supplies a deterministic context feature
+and does not introduce an independently selected neural checkpoint.
+
+\begin{table}[H]
+  \caption{Main notation used in the methodology.}
+  \label{tab:notation}
+  \centering
+  \small
+  \begin{tabular}{@{}p{0.20\columnwidth}p{0.71\columnwidth}@{}}
+    \toprule
+    Symbol & Meaning \\
+    \midrule
+    $e_i$ & Event indexed by $i$ \\
+    $G_i=(V_i,E_i)$ & Directed conversation graph \\
+    $X_i,S_i$ & Node attributes and serialized event text \\
+    $y_i$ & Binary rumor label \\
+    $\boldsymbol{h}_i^g$ & Propagation representation \\
+    $\boldsymbol{z}_i^g$ & Two-class graph evidence logits \\
+    $S_i^{(a)}$ & Stochastic text view $a$ \\
+    $\boldsymbol{z}_i^{t,a}$ & Text logits for view $a$ \\
+    $\bar{\boldsymbol{z}}_i^t$ & Mean two-view text evidence \\
+    $\boldsymbol{q}_i$ & Normalized event descriptor \\
+    $\mathcal{B}$ & Reference event bank \\
+    $\mathcal{N}_k(i)$ & Legal $k$-neighbor set for event $i$ \\
+    $r_i$ & Cross-event semantic context margin \\
+    $\boldsymbol{z}_i$ & Final fused logits \\
+    $\theta,\rho$ & Model parameters and SAM radius \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The conversation may contain only a source or a small number of replies.
+Accordingly, every channel is defined for a nonempty source event: the graph
+readout uses the source when no reply is present, the text serializer always
+retains the source, and the event descriptor has a valid source, mean, and
+maximum.  This design prevents sparse conversations from being discarded
+during preprocessing and lets cross-event context supplement weak within-event
+evidence.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig1_umer_architecture.pdf}
+  \caption{Overview of UMER.  An event is represented by three complementary
+  modules: a two-channel propagation encoder, cross-view textual consistency
+  with a shared DeBERTa-v3 encoder, and cross-event semantic context.  Their
+  graph, text, and context evidence is jointly fused to produce the rumor
+  prediction.}
+  \Description{A black-and-white left-to-right architecture diagram.  A reply
+  topology and its textual content feed three complementary modules: a
+  two-channel propagation encoder, two label-preserving text views processed
+  by a shared encoder, and query-to-memory semantic retrieval.  The resulting
+  graph evidence, text evidence, and context support enter a joint evidence
+  fusion module that outputs the rumor prediction.}
+  \label{fig:architecture}
+\end{figure*}
+
+\subsection{Propagation Representation Learning}
+\label{sec:graph}
+
+Propagation structure provides evidence that is not reducible to wording.
+Rumor and non-rumor discussions may differ in breadth, response timing, and
+the interaction between the source and replies.  A single graph readout can
+nevertheless be brittle.  Attention over node sequences is expressive but may
+overfit the ordering of a small node set, whereas global pooling is stable but
+can erase important interactions.  We therefore combine a
+permutation-invariant token-set path with a structural Transformer path.
+
+\paragraph{Node-token set path.}
+For node $v\in V_i$, let
+$\boldsymbol{u}_{ivm}\in\mathbb{R}^{d_m}$ be its $m$th non-text token,
+covering user, temporal, and propagation summaries.  A shared multilayer
+perceptron $\phi$ projects the $M=14$ tokens:
+\begin{equation}
+  \boldsymbol{o}_{ivm}
+  =\phi(\boldsymbol{u}_{ivm}),\qquad
+  \boldsymbol{s}_{iv}
+  =[\mean_m\boldsymbol{o}_{ivm};
+    \maxpool_m\boldsymbol{o}_{ivm}].
+  \label{eq:token-set}
+\end{equation}
+Mean pooling captures the overall evidence level and max pooling preserves a
+salient structural cue.  A second readout over nodes yields
+\begin{equation}
+  \boldsymbol{h}_i^{\mathrm{set}}
+  =[\mean_{v\in V_i}\boldsymbol{s}_{iv};
+    \maxpool_{v\in V_i}\boldsymbol{s}_{iv}],
+  \label{eq:set-readout}
+\end{equation}
+which is invariant to node enumeration and remains valid for a one-node
+event.
+
+\paragraph{Structural Transformer path.}
+Let $\boldsymbol{x}_{iv}\in\mathbb{R}^{384}$ be a fixed sentence embedding and
+$\boldsymbol{a}_{iv}$ collect non-text and temporally discretized structural
+features.  Separate projections place them in a common $d$-dimensional space:
+\begin{equation}
+  \boldsymbol{n}_{iv}
+  =W_x\boldsymbol{x}_{iv}+W_a\boldsymbol{a}_{iv}+\boldsymbol{b}_n.
+  \label{eq:node-projection}
+\end{equation}
+A learned classification token is prepended and a one-layer, eight-head
+Transformer encodes the variable node set:
+\begin{align}
+  H_i &=\operatorname{Transformer}
+  ([\boldsymbol{c};\boldsymbol{n}_{i1};\ldots;
+  \boldsymbol{n}_{i|V_i|}]),\\
+  \boldsymbol{h}_i^{\mathrm{tr}}
+  &=[H_{i,0};\mean_{v\in V_i}H_{i,v}].
+  \label{eq:graph-transformer}
+\end{align}
+The classification token aggregates learned interactions, while the explicit
+mean creates a direct global path that is less dependent on a single token.
+The two graph summaries are fused and classified:
+\begin{equation}
+  \boldsymbol{h}_i^g
+  =F_g([\boldsymbol{h}_i^{\mathrm{set}};
+        \boldsymbol{h}_i^{\mathrm{tr}}]),\qquad
+  \boldsymbol{z}_i^g=W_g\boldsymbol{h}_i^g+\boldsymbol{b}_g.
+  \label{eq:graph-logits}
+\end{equation}
+Mild source-preserving node dropout perturbs the reply context during
+optimization.  The source node is never removed, so the branch remains
+well-defined for sparse threads.
+
+\subsection{Cross-View Textual Representation Learning}
+\label{sec:text}
+
+An event contains far more text than a conventional sentence classifier can
+always retain.  A deterministic serialization may overemphasize whichever
+replies happen to appear before the token limit.  We instead sample two legal
+views $S_i^{(1)}$ and $S_i^{(2)}$ from a view distribution
+$\mathcal{T}(S_i)$.  Both views preserve the source and use only posts from
+the same event, but may expose different reply orderings and truncation
+boundaries:
+\begin{equation}
+  S_i^{(a)}\sim\mathcal{T}(S_i),\qquad a\in\{1,2\}.
+  \label{eq:text-views}
+\end{equation}
+This construction treats reply selection as an internal observation
+uncertainty rather than creating new labeled examples.
+
+\paragraph{Shared semantic encoder.}
+Both views pass through the same DeBERTa-v3-large encoder $T_{\theta_t}$ and
+classification head:
+\begin{equation}
+  \boldsymbol{z}_i^{t,a}
+  =W_tT_{\theta_t}(S_i^{(a)})+\boldsymbol{b}_t,\qquad
+  \boldsymbol{p}_i^{t,a}=\softmax(\boldsymbol{z}_i^{t,a}).
+  \label{eq:text-logits}
+\end{equation}
+Sharing weights ensures that the views regularize one text model rather than
+form two independently selected predictors.  Their decision evidence is
+\begin{equation}
+  \bar{\boldsymbol{z}}_i^t
+  =\tfrac{1}{2}
+  (\boldsymbol{z}_i^{t,1}+\boldsymbol{z}_i^{t,2}).
+  \label{eq:text-average}
+\end{equation}
+
+\paragraph{Prediction consistency.}
+Let
+$\boldsymbol{m}_i=\tfrac{1}{2}
+(\boldsymbol{p}_i^{t,1}+\boldsymbol{p}_i^{t,2})$.
+We regularize the two decisions using the Jensen--Shannon
+divergence
+\begin{equation}
+  \mathcal{L}_{\mathrm{cv}}^{(i)}
+  =\tfrac{1}{2}\operatorname{KL}
+  (\boldsymbol{p}_i^{t,1}\Vert\boldsymbol{m}_i)
+  +\tfrac{1}{2}\operatorname{KL}
+  (\boldsymbol{p}_i^{t,2}\Vert\boldsymbol{m}_i).
+  \label{eq:gjsd}
+\end{equation}
+The constraint acts on class distributions, not hidden vectors.  Thus the
+views can encode different reply details while being discouraged from
+contradicting each other at the decision level.
+
+\subsection{Cross-Event Semantic Context Learning}
+\label{sec:context}
+
+Within-event evidence can be incomplete.  A source-only event has little
+propagation information, and a short generic claim may remain ambiguous even
+to a large language model.  Cross-event context asks a complementary
+question: do semantically related reference events support one class more
+strongly than the other?  The resulting score is not a replacement for graph
+or text encoding; it is an explicit local precedent whose neighbors and
+weights can be audited.
+
+\paragraph{Event descriptor.}
+Let $\boldsymbol{x}_{iv}$ be the fixed 384-dimensional sentence embedding of
+post $v$, and let $s_i$ identify the source.  We summarize complementary
+aspects of the event using
+\begin{equation}
+ \boldsymbol{q}_i=\norm\!\left[
+ \boldsymbol{x}_{is_i};
+ \mean_{v}\boldsymbol{x}_{iv};
+ \maxpool_{v}\boldsymbol{x}_{iv};
+ \mean_{v}\boldsymbol{x}_{iv}-\boldsymbol{x}_{is_i}
+ \right].
+ \label{eq:event-descriptor}
+\end{equation}
+The source represents the original claim, the mean captures overall
+discussion semantics, the maximum preserves dimension-wise salient signals,
+and the source-relative term describes how replies shift the conversation.
+For a source-only event, the relative term becomes zero and the remaining
+components remain valid.
+
+\paragraph{Reference bank and local support.}
+Define the reference event bank as
+\begin{equation}
+  \mathcal{B}=\{(\boldsymbol{q}_j,y_j)\}_{j\in\mathcal{I}_{\mathcal{B}}}.
+  \label{eq:bank}
+\end{equation}
+For query $i$, its legal $k$-nearest neighbor set
+$\mathcal{N}_k(i)$ excludes the query itself whenever it is indexed in the
+bank.  With cosine similarity and temperature $\tau$,
+\begin{align}
+  a_{ij}
+  &=\frac{\exp(\cos(\boldsymbol{q}_i,\boldsymbol{q}_j)/\tau)}
+  {\sum_{\ell\in\mathcal{N}_k(i)}
+   \exp(\cos(\boldsymbol{q}_i,\boldsymbol{q}_{\ell})/\tau)},\\
+  p_i^m&=\sum_{j\in\mathcal{N}_k(i)}a_{ij}y_j.
+  \label{eq:neighbor-support}
+\end{align}
+The semantic context is expressed as a log-odds margin
+\begin{equation}
+  r_i=\log
+  \frac{p_i^m+\epsilon}{1-p_i^m+\epsilon}.
+  \label{eq:context-margin}
+\end{equation}
+A positive margin supports the rumor class and a negative margin supports the
+non-rumor class.  Temperature-weighted support is smoother than copying the
+single nearest label, while the scalar margin prevents the non-parametric
+channel from dominating by dimensionality alone.  The admissible membership
+of $\mathcal{B}$ is specified by the evaluation protocol in
+Section~\ref{sec:data}.
+
+\subsection{Decision-Level Tri-Evidence Fusion}
+\label{sec:fusion}
+
+High-dimensional hidden-state concatenation can introduce a large fusion
+network on top of a modest event corpus.  It can also obscure whether a
+prediction arose from propagation, text, or cross-event support.  We instead
+fuse decision-level evidence: two graph logits, two averaged text
+logits, and one semantic context margin,
+\begin{equation}
+  \boldsymbol{u}_i=
+  [\boldsymbol{z}_i^g;\bar{\boldsymbol{z}}_i^t;r_i]
+  \in\mathbb{R}^{5}.
+  \label{eq:fusion-input}
+\end{equation}
+The final classifier is deliberately linear:
+\begin{equation}
+  \boldsymbol{z}_i=W_f\boldsymbol{u}_i+\boldsymbol{b}_f,\qquad
+  \hat{\boldsymbol{p}}_i=\softmax(\boldsymbol{z}_i).
+  \label{eq:fusion}
+\end{equation}
+Although compact, $W_f$ can learn class-specific agreement and conflict
+patterns across channels.  The entire path from graph and text encoders to
+$W_f$ is optimized jointly, producing one deployable checkpoint.
+
+Class imbalance is handled by weighted cross entropy
+$\operatorname{CE}_w$.  Auxiliary graph and text losses preserve the
+discriminative ability of each parametric branch:
+\begin{align}
+  \mathcal{L}_{\mathrm{sup}}^{(i)}
+  ={}&\operatorname{CE}_w(\boldsymbol{z}_i,y_i)
+  +\lambda_g\operatorname{CE}_w(\boldsymbol{z}_i^g,y_i)\nonumber\\
+  &+\lambda_t
+  \operatorname{CE}_w(\bar{\boldsymbol{z}}_i^t,y_i).
+  \label{eq:supervised-loss}
+\end{align}
+The complete per-event objective is
+\begin{equation}
+  \mathcal{L}^{(i)}
+  =\mathcal{L}_{\mathrm{sup}}^{(i)}
+  +\lambda_{\mathrm{cv}}\mathcal{L}_{\mathrm{cv}}^{(i)}.
+  \label{eq:complete-loss}
+\end{equation}
+Branch supervision is important because a low-capacity fusion head can
+otherwise settle on the easiest channel early and starve the complementary
+encoder of a useful learning signal.
+
+\subsection{Exact Effective-Batch Sharpness-Aware Optimization}
+\label{sec:sam}
+
+\paragraph{Why exact replay is necessary.}
+SAM minimizes the maximum loss within a radius-$\rho$ parameter neighborhood:
+\begin{equation}
+  \min_{\theta}
+  \max_{\|\boldsymbol{\epsilon}\|_2\le\rho}
+  \mathcal{L}_{B}(\theta+\boldsymbol{\epsilon}).
+  \label{eq:sam-objective}
+\end{equation}
+Using the first-order approximation,
+\begin{equation}
+  \boldsymbol{\epsilon}_{B}
+  =\rho\,
+  \frac{\nabla_{\theta}\mathcal{L}_{B}(\theta)}
+  {\|\nabla_{\theta}\mathcal{L}_{B}(\theta)\|_2+\delta}.
+  \label{eq:sam-perturbation}
+\end{equation}
+The notation $B$ must refer to the same stochastic objective in both passes.
+If the perturbed pass samples different event views, node dropout, or encoder
+dropout, then
+$\mathcal{L}_{B'}(\theta+\boldsymbol{\epsilon}_{B})$ is evaluated for
+$B'\ne B$.  The update then mixes parameter sharpness with view noise.
+
+\paragraph{Accumulated two-pass update.}
+Let the effective batch be the ordered union
+$B=\bigcup_{m=1}^{A}B_m$ of $A$ physical microbatches.  For each optimizer
+step, \method\ executes:
+\begin{align}
+  \boldsymbol{g}
+  &=\frac{1}{A}\sum_{m=1}^{A}
+    \nabla_{\theta}\mathcal{L}_{B_m}(\theta;\omega_m),
+  \label{eq:first-pass}\\
+  \boldsymbol{g}_{\mathrm{sam}}
+  &=\frac{1}{A}\sum_{m=1}^{A}
+    \nabla_{\theta}
+    \mathcal{L}_{B_m}(\theta+\boldsymbol{\epsilon}_{B};\omega_m),
+  \label{eq:second-pass}
+\end{align}
+where $\omega_m$ contains the constructed graph/text views and random-number
+generator state for microbatch $m$.  The same $\omega_m$ appears in both
+equations.  In practice, event identities, views, and random states are cached
+during the first pass; parameters are perturbed once after all first-pass
+gradients have accumulated; the microbatches are replayed in the same order;
+parameters are restored; and AdamW applies only the clipped perturbed-pass
+gradient.  SAM adds no parameters and no inference-time operations.
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Datasets}
+\label{sec:data}
+
+We evaluate on PHEME and Ma-Weibo, two public event-level rumor datasets from
+different platforms and languages.  Table~\ref{tab:datasets} reports the
+class composition and the post-count distribution after our common
+preprocessing, i.e., the instances actually supplied to the models.  PHEME
+contains journalist-verified English Twitter conversation threads around nine
+breaking-news events~\cite{zubiaga2016pheme}.  Its processed binary corpus has
+6,425 event graphs, of which 2,402 are rumors and 4,023 are non-rumors.
+Ma-Weibo contains Chinese Sina Weibo events collected from rumors reported by
+the platform's community management center and a similar number of unreported
+general events~\cite{ma2016rnn}.  It has 4,664 events, including 2,313 rumors
+and 2,351 non-rumors.  The original release reports 3,805,656 posts, whereas
+the common observation window below retains 1,771,329 posts.
+
+\begin{table}[t]
+  \caption{Dataset statistics after the common 240-hour preprocessing.
+  ``Posts/event'' counts the retained source post and replies or reposts in an
+  event; Q1 and Q3 are the first and third quartiles.}
+  \label{tab:datasets}
+  \centering
+  \small
+  \setlength{\tabcolsep}{6pt}
+  \begin{tabular}{@{}lrr@{}}
+    \toprule
+    Statistic & PHEME & Ma-Weibo \\
+    \midrule
+    Language & English & Chinese \\
+    Events & 6,425 & 4,664 \\
+    Rumor / non-rumor & 2,402 / 4,023 & 2,313 / 2,351 \\
+    Retained posts & 105,238 & 1,771,329 \\
+    Posts/event minimum & 1 & 1 \\
+    Posts/event mean $\pm$ SD & 16.38 $\pm$ 19.59 &
+    379.79 $\pm$ 340.78 \\
+    Posts/event median [Q1, Q3] & 12 [5, 21] & 236 [112, 592] \\
+    Posts/event maximum & 342 & 1,021 \\
+    Source-only events & 677 (10.54\%) & 6 (0.13\%) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Both corpora are converted to a common event representation.  The source post
+is the root, and retained replies or reposts become event-local nodes ordered
+chronologically.  Parent--child relations are preserved when available;
+records with missing parent identifiers are attached using the dataset's
+recoverable propagation metadata rather than discarded.  Text is normalized
+without introducing external articles, user profiles, generated labels, or
+additional rumor corpora.  Each node receives its post-semantic vector,
+available user attributes, relative time, and propagation summaries.  Posts
+within 240 hours of the source are retained and time is discretized into 480
+half-hour bins, providing the same observation window on both datasets.
+
+The two corpora differ sharply in conversation density.  A processed PHEME
+event contains only 16.38 posts on average, compared with 379.79 in Ma-Weibo,
+and their strongly right-skewed distributions make the medians and quartiles
+more informative than the maxima alone.  In particular, 677 PHEME events
+(10.54\%) contain only the source post, whereas this occurs for just six
+Ma-Weibo events (0.13\%).  We retain these sparse cases: the source is always
+preserved under text truncation and node dropout, and an empty reply aggregate
+falls back to the source-defined representation in
+Section~\ref{sec:method}.  Removing them would change the benchmark population
+and conceal precisely the cases in which within-event propagation is least
+informative and cross-event context may be most useful.
+
+For comparability, both datasets use fixed stratified five-fold event-level
+partitions.  All posts belonging to one event remain in the same fold.  Within
+each outer training portion, a validation subset is separated before
+optimization.  The reference event bank is populated only with labeled events
+available to the corresponding outer training partition; validation and test
+events query that bank but never populate it, and an indexed training query is
+excluded from its own neighborhood.  Thus graph construction, text views, and
+cross-event context respect the same event boundary and cannot transfer labels
+from the held-out fold.
+
+\subsection{Baselines and Evaluation Metrics}
+\label{sec:baselines}
+
+\paragraph{Baselines.}
+We compare against nine methods spanning feature engineering, sequential
+modeling, graph neural networks, and recent robust or temporal architectures.
+\textbf{SVM-TS} represents an event by time series of content, user, and
+propagation statistics and applies a linear SVM~\cite{ma2015svmts}.
+\textbf{DLSTM} groups a source and temporally ordered replies, filters reply
+content using user influence, and encodes the sequence with stacked
+LSTMs~\cite{xu2019dlstm}.  \textbf{Bi-GCN} combines top-down and bottom-up
+graph convolution with root enhancement~\cite{bian2020bigcn}.
+\textbf{RAGCL} adds centrality-guided node, edge, and attribute augmentations
+to graph contrastive learning~\cite{cui2024ragcl}.  \textbf{PAGCN} couples
+semantic encoding with propagation-path graph convolution and path
+attention~\cite{liu2025pagcn}.  \textbf{TGA-CMF} uses time-decayed graph
+attention and graph-guided textual fusion~\cite{ding2026tgacmf}.
+\textbf{ADAAT-FGM} combines adaptive edge/feature augmentation, adversarial
+hard examples, and supervised contrastive learning~\cite{wang2025adaat}.
+\textbf{RRD-N} uses information-bottleneck contrastive pre-training and
+Bayesian variational fine-tuning to resist propagation noise
+~\cite{zhang2026rrdn}.  Finally, \textbf{MST} constructs cumulative temporal
+graphs and fuses dual dynamic graph convolutions through cross-attention
+~\cite{huang2025mst}.
+
+Every method receives the same fixed outer five-fold event partitions.
+Beyond this common partition, we retain each paper or author implementation's
+preprocessing, model, optimizer, and stopping protocol whenever disclosed;
+missing settings are reported with the reproduction rather than silently
+attributed to the authors.  The released MST pipeline cannot construct a
+propagation graph for source-only events and therefore evaluates only its
+eligible subset; all other reported systems retain the complete test fold.
+
+\begin{table}[b]
+  \caption{Training and evaluation configuration of \method.}
+  \label{tab:training-config}
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    Item & Setting \\
+    \midrule
+    Text encoder & DeBERTa-v3-large \\
+    Graph hidden size / dropout & 256 / 0.35 \\
+    Physical / effective batch & 4 / 64 \\
+    Gradient accumulation & 16 microbatches \\
+    Graph / text / fusion LR & $10^{-4}$ / $2{\times}10^{-5}$ / $10^{-3}$ \\
+    Weight decay / warmup & 0.01 / 0.10 \\
+    Epoch cap / patience & 30 / 7 \\
+    Retrieval $k$ / temperature & 31 / 0.05 \\
+    Cross-view weight $\lambda_{\mathrm{cv}}$ & 0.5 \\
+    SAM radius $\rho$ & 0.05 \\
+    Partition / training seed & 3090 / 2000 \\
+    Class weighting & Square-root inverse frequency \\
+    Checkpoint criterion & Max--min of four validation metrics \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table*}[!t]
+  \caption{Five-fold mean comparison on PHEME.  P, R, and F1 denote
+  class-wise precision, recall, and F1, respectively.  The best value in each
+  column is shown in bold.}
+  \label{tab:pheme-results}
+  \centering
+  \small
+  \setlength{\tabcolsep}{7.2pt}
+  \begin{tabular}{@{}lccccccc@{}}
+    \toprule
+    & \multicolumn{3}{c}{Rumor} &
+      \multicolumn{3}{c}{Non-rumor} & Overall \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+    Method & P & R & F1 & P & R & F1 & Acc. \\
+    \midrule
+    SVM-TS       & 0.4829 & 0.4430 & 0.4620 & 0.6830 & 0.7166 & 0.6994 & 0.6143 \\
+    DLSTM        & 0.4147 & 0.4218 & 0.3870 & 0.6636 & 0.6557 & 0.6450 & 0.5682 \\
+    Bi-GCN
+                  & 0.8390 & 0.7589 & 0.7961 & 0.8642 & 0.9122 & 0.8873 & 0.8549 \\
+    RAGCL
+                  & 0.7291 & 0.7276 & 0.7272 & 0.8380 & 0.8371 & 0.8370 & 0.7961 \\
+    PAGCN         & 0.7734 & 0.6173 & 0.6528 & 0.8053 & 0.8832 & 0.8383 & 0.7838 \\
+    TGA-CMF       & 0.6840 & 0.6653 & 0.6727 & 0.8039 & 0.8146 & 0.8085 & 0.7588 \\
+    ADAAT-FGM     & 0.7742 & 0.7090 & 0.7371 & 0.8357 & 0.8730 & 0.8528 & 0.8117 \\
+    RRD-N
+                  & 0.8357 & 0.7919 & 0.8119 & 0.8803 & 0.9061 & 0.8926 & 0.8633 \\
+    MST$^{\ddagger}$
+                  & \textbf{0.8620} & 0.7760 & 0.8161 & 0.8738 &
+                    \textbf{0.9247} & 0.8983 & 0.8691 \\
+    \midrule
+    \method       & 0.8560 & \textbf{0.8784} & \textbf{0.8666} &
+                    \textbf{0.9264} & 0.9110 & \textbf{0.9185} &
+                    \textbf{0.8988} \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\paragraph{Evaluation metrics.}
+For each class $c\in\{\mathrm{R},\mathrm{NR}\}$, we treat $c$ as the positive
+class and denote its true positives, false positives, and false negatives by
+$\mathrm{TP}_c$, $\mathrm{FP}_c$, and $\mathrm{FN}_c$.
+\begin{align}
+  P_c&=\frac{\mathrm{TP}_c}
+  {\mathrm{TP}_c+\mathrm{FP}_c},\qquad
+  R_c=\frac{\mathrm{TP}_c}
+  {\mathrm{TP}_c+\mathrm{FN}_c},\\
+  F_{1,c}&=\frac{2P_cR_c}{P_c+R_c}.
+\end{align}
+Overall accuracy is
+\begin{equation}
+  \mathrm{Accuracy}
+  =\frac{\mathrm{TP}_{\mathrm{R}}+\mathrm{TP}_{\mathrm{NR}}}
+  {n_{\mathrm{R}}+n_{\mathrm{NR}}},
+\end{equation}
+where $n_c$ is the support of class $c$.  Accuracy is reported only once:
+under binary one-versus-rest evaluation, a class-specific accuracy equals
+overall accuracy, while correctness restricted to examples of class $c$
+equals $R_c$.  Repeating either quantity as a separate class-accuracy column
+would therefore duplicate an existing metric.  For every reported quantity,
+we first compute the metric on each fixed test fold and then take the
+arithmetic mean over the five folds.  We summarize the two labels using
+\begin{equation}
+  P_{\mathrm{macro}}=\frac{1}{2}\sum_c P_c,\quad
+  R_{\mathrm{macro}}=\frac{1}{2}\sum_c R_c,\quad
+  F_{1,\mathrm{macro}}=\frac{1}{2}\sum_c F_{1,c}.
+\end{equation}
+The PHEME table gives the full class-wise decomposition.  The Ma-Weibo table
+reports accuracy once and macro-averages precision, recall, and F1 across the
+rumor and non-rumor labels, preventing the larger class from receiving more
+weight.
+
+\subsection{Experimental Results and Analyses}
+\label{sec:results}
+
+\paragraph{PHEME comparison.}
+Table~\ref{tab:pheme-results} reports five-fold mean performance on PHEME.
+Boldface marks the highest value in each metric column.  The double dagger
+identifies the MST result computed after its released pipeline excludes
+source-only events.  This qualification is necessary because the corresponding
+row is not evaluated over every test event.
+
+\method\ achieves the highest overall accuracy, 0.8988, improving over the
+strongest reproduced baseline, MST, by 2.97 percentage points.  The gain is
+not obtained by favoring only the majority non-rumor class.  Compared with
+MST, \method\ raises rumor recall from 0.7760 to 0.8784 and rumor F1 from
+0.8161 to 0.8666, gains of 10.24 and 5.05 percentage points, respectively.
+It also improves non-rumor precision from 0.8738 to 0.9264 and non-rumor F1
+from 0.8983 to 0.9185.  MST retains slightly higher rumor precision and
+non-rumor recall, indicating a more conservative tendency to assign the rumor
+label.  In contrast, the unified evidence learned by \method\ substantially
+reduces missed rumors while preserving strong performance on non-rumors.
+
+Among the remaining baselines, RRD-N and Bi-GCN obtain overall accuracies of
+0.8633 and 0.8549.  The sequence-based DLSTM and feature-engineered SVM-TS are
+markedly weaker, whereas graph-oriented methods generally perform better,
+supporting the value of propagation structure.  Nevertheless, their lower
+rumor recall and F1 show that event-local propagation alone is insufficient
+for the minority class.  The class-wise gains of \method\ are consistent with
+its joint use of propagation, cross-view textual evidence, and cross-event
+semantic support.
+
+\begin{table}[t]
+  \caption{Results on Ma-Weibo. P, R, and F1 are two-class macro-averages.
+  All rows are five-fold means except RRD-N$^{\dagger}$, which is the mean of
+  the three completed folds. The incomplete row is excluded from five-fold
+  ranking claims.}
+  \label{tab:maweibo-results}
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.6pt}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    Method & Acc. & P & R & F1 \\
+    \midrule
+    SVM-TS       & 0.7706 & 0.7714 & 0.7704 & 0.7703 \\
+    DLSTM        & 0.5967 & 0.5984 & 0.5969 & 0.5950 \\
+    Bi-GCN       & 0.8986 & 0.8989 & 0.8985 & 0.8985 \\
+    RAGCL        & 0.9117 & 0.9195 & 0.9116 & 0.9109 \\
+    PAGCN        & 0.9569 & 0.9570 & 0.9570 & 0.9569 \\
+    TGA-CMF      & 0.9031 & 0.9062 & 0.9034 & 0.9029 \\
+    ADAAT-FGM    & 0.9443 & 0.9448 & 0.9444 & 0.9442 \\
+    RRD-N$^{\dagger}$ & 0.9093 & 0.9094 & 0.9093 & 0.9092 \\
+    MST           & 0.9325 & 0.9345 & 0.9327 & 0.9324 \\
+    \midrule
+    \method       & \textbf{0.9689} & \textbf{0.9698} &
+                    \textbf{0.9691} & \textbf{0.9689} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.96\textwidth]{figures/fig3_training_dynamics.pdf}
+  \Description{Two line charts show validation Macro-F1 across epochs for the
+  five PHEME folds and the five Ma-Weibo folds. Hollow circles mark the epochs
+  from which the final checkpoints were selected.}
+  \caption{Validation Macro-F1 trajectories of \method\ on the five outer
+  folds. Hollow circles denote the selected checkpoint epochs; selection uses
+  the validation-only multi-metric rule rather than Macro-F1 alone.}
+  \label{fig:training-dynamics}
+\end{figure*}
+
+\paragraph{Ma-Weibo comparison.}
+Table~\ref{tab:maweibo-results} shows that \method\ also performs strongly on
+the larger Chinese corpus.  It improves accuracy from 0.9569 for the strongest
+completed five-fold baseline, PAGCN, to 0.9689, an absolute gain of 1.20
+percentage points.  The requested two-class aggregates show the same pattern:
+macro-precision rises from 0.9570 to 0.9698, macro-recall from 0.9570 to
+0.9691, and macro-F1 from 0.9569 to 0.9689.  Thus the gain is not an artifact
+of reporting a support-weighted score on this nearly balanced corpus.
+ADAAT-FGM and MST form the next strongest group, while the feature-engineered
+and sequential baselines remain substantially lower.  The three completed
+RRD-N folds average 0.9093 accuracy; because folds 4--5 are unavailable, we
+retain it as an explicitly incomplete result and exclude it from five-fold
+rankings and improvement calculations.
+
+The absolute performance difference between the two datasets should not be
+read as a language effect in isolation.  Ma-Weibo is nearly class-balanced and
+contains substantially denser conversations, whereas PHEME contains 10.54\%
+source-only events and a minority rumor class.  Accordingly, \method's margin
+over the strongest completed baseline is larger on PHEME (2.97 points) than on
+Ma-Weibo (1.20 points).  This pattern supports the intended role of unified
+evidence learning under sparse and heterogeneous conversations, while avoiding
+a causal claim from only two corpora.
+
+\paragraph{Training dynamics.}
+Figure~\ref{fig:training-dynamics} analyzes the optimization behavior of the
+full model using the histories produced by the formal five-fold runs.
+Validation Macro-F1 rises rapidly during the first four to six epochs and then
+enters a narrower plateau on both datasets.  The selected epochs lie between
+9 and 14 on PHEME and between 10 and 17 on Ma-Weibo, well before the 30-epoch
+cap.  Continued optimization after the plateau produces small fold-specific
+oscillations rather than a consistent upward trend.  This explains why a
+moderate patience window is preferable to fixing the checkpoint at the maximum
+epoch.
+
+The checkpoint markers do not always coincide with the highest point on the
+displayed Macro-F1 curve because model selection balances Accuracy,
+Weighted-F1, Macro-F1, and Rumor-F1 on the validation split.  A checkpoint is
+therefore retained only when its weakest validation measure is competitive,
+rather than when one aggregate score peaks.  The similar rise-and-plateau
+pattern across all ten folds shows that the selected models emerge from a
+stable optimization regime rather than an isolated single-epoch spike.
+
+The selected validation Macro-F1 values range from 0.8764 to 0.9147 on PHEME
+and from 0.9679 to 0.9866 on Ma-Weibo.  More importantly, no fold exhibits a
+late collapse after reaching its high-performance region: subsequent epochs
+remain close to the plateau even when they are not selected.  The fold-to-fold
+difference is therefore expressed mainly through the attainable plateau and
+the epoch at which it is reached.  Thus the exact-replay SAM training runs
+reach stable validation regions and support validation-based checkpointing
+without requiring checkpoint averaging or post-hoc ensembling.
+
+\begin{table}[t]
+  \caption{Five-fold ablation on PHEME. $\Delta$Acc. is the absolute accuracy
+  change in percentage points relative to the full model.}
+  \label{tab:ablation}
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.1pt}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Variant & Acc. & W-F1 & M-F1 & R-F1 & $\Delta$Acc. \\
+    \midrule
+    \method & \textbf{0.8988} & \textbf{0.8991} & \textbf{0.8925} &
+      \textbf{0.8666} & -- \\
+    w/o graph evidence & 0.8940 & 0.8942 & 0.8873 & 0.8601 & $-0.48$ \\
+    w/o text evidence & 0.8601 & 0.8609 & 0.8525 & 0.8193 & $-3.88$ \\
+    w/o cross-event context & 0.8985 & 0.8988 & 0.8923 & 0.8663 & $-0.03$ \\
+    w/o view consistency & 0.8895 & 0.8902 & 0.8837 & 0.8579 & $-0.93$ \\
+    w/o SAM & 0.8951 & 0.8955 & 0.8890 & 0.8629 & $-0.37$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/fig2_ablation_drops.pdf}
+  \Description{A horizontal grouped bar chart showing the accuracy, macro-F1,
+  and rumor-F1 decreases caused by five ablations. Removing text evidence has
+  the largest decrease, followed by cross-view consistency, graph evidence,
+  SAM, and cross-event context.}
+  \caption{Absolute PHEME performance decrease after removing each component.
+  Text evidence and cross-view consistency produce the largest drops; the
+  cross-event context has little effect on aggregate five-fold metrics.}
+  \label{fig:ablation-drops}
+\end{figure}
+
+\paragraph{Ablation study.}
+Table~\ref{tab:ablation} and Figure~\ref{fig:ablation-drops} isolate the main
+components under the same PHEME partitions and training seed.  Textual evidence
+is indispensable: removing it lowers accuracy by 3.88 points and rumor-F1 by
+4.73 points.  Cross-view consistency is the next largest contributor, with
+0.93-point accuracy and 0.87-point rumor-F1 reductions, showing that agreement
+between label-preserving serializations matters beyond merely sharing an
+encoder.  Removing graph evidence reduces accuracy by 0.48 points and
+rumor-F1 by 0.65 points, confirming a complementary but smaller structural
+contribution.  Exact-replay SAM contributes 0.37 accuracy points without
+changing inference.
+
+The cross-event context ablation changes all four aggregate metrics by only
+about 0.03 points.  Thus the present evidence does not support attributing the
+overall gain primarily to the reference bank.  It remains a well-defined source
+of support for individual queries, but establishing a selective benefit for
+sparse or difficult events requires a dedicated subgroup study.  Reporting
+this small aggregate effect is important: the principal measured improvements
+come from jointly learned textual and structural evidence, cross-view
+regularization, and sharpness-aware optimization.
+
+The ablations should be interpreted as component removals rather than an
+additive decomposition.  In particular, the 0.93-point consistency drop is
+measured while the shared text encoder remains active, so it isolates the
+benefit of constraining two valid conversation serializations rather than the
+benefit of language modeling itself.  Likewise, the graph ablation retains
+text and semantic context, explaining why its 0.48-point drop is smaller than
+the gap between graph-only baselines and \method.  The SAM result has a
+different operational implication: its 0.37-point gain costs a second
+sharpness pass during optimization, but introduces neither new parameters nor
+additional computation after training.  These distinctions prevent equating
+the largest numerical ablation with the only useful module and clarify which
+components affect representation, robustness, and deployment cost.
+
+The class-sensitive ablation changes further distinguish the evidence paths.
+Removing text reduces rumor-F1 by 4.73 points, exceeding its 3.88-point
+accuracy loss; removing graph evidence similarly reduces rumor-F1 by 0.65
+points versus a 0.48-point accuracy loss.  These two channels therefore make a
+disproportionately visible contribution to the minority rumor class.  By
+contrast, removing cross-view consistency lowers accuracy and rumor-F1 by
+similar amounts (0.93 and 0.87 points), indicating a broader stabilization of
+the fused decision rather than an exclusively class-specific effect.  The SAM
+ablation is also nearly uniform across aggregate metrics.  This metric-level
+pattern complements the magnitude ranking in Figure~\ref{fig:ablation-drops}:
+text is the primary evidence source, graph structure supplies smaller
+minority-sensitive support, and consistency and SAM mainly improve the
+reliability of their joint optimization.
+
+\FloatBarrier
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented \method, a single-checkpoint framework that unifies propagation,
+multi-view event text, and cross-event semantic support for social rumor
+detection.  The model couples complementary graph readouts with a shared
+DeBERTa-v3 encoder, aligns label-preserving conversation serializations, and
+uses branch supervision to prevent evidence collapse.  Exact-replay SAM makes
+the two sharpness evaluations operate on the same accumulated stochastic
+batch, adding no inference-time computation.
+
+Across fixed five-fold partitions, \method\ achieves 0.8988 accuracy on PHEME
+and 0.9689 on Ma-Weibo, outperforming the strongest completed five-fold
+baseline by 2.97 and 1.20 percentage points, respectively.  The PHEME ablation
+identifies textual evidence and cross-view consistency as the dominant
+contributors, with smaller complementary gains from propagation evidence and
+SAM.  Cross-event context yields only a marginal aggregate improvement, so its
+value should be tested on pre-defined sparse-thread and difficult-event groups
+rather than inferred from the overall mean.  Future work should also reduce
+the training cost of large language encoders and exact-replay SAM, and examine
+generalization across platforms, topics, and evolving rumor distributions.
+
+\section{Ethical Considerations}
+
+Rumor detection is a high-impact classification task.  False positives may
+suppress legitimate reporting, satire, or unresolved claims, while false
+negatives may allow harmful misinformation to spread.  The model should
+therefore support human review rather than autonomous censorship; its output
+is a probabilistic signal based on textual and conversational patterns, not a
+fact-checking verdict or proof of author intent.
+
+The experiments use existing research datasets of public social-media
+conversations and introduce no external user profiles or web evidence.
+Released artifacts should replace user identifiers with event-local indices
+and follow the original dataset terms.  Aggregate metrics may conceal unequal
+error rates across topics, languages, communities, and conversation sizes, so
+we report class-specific results and retain source-only events rather than
+silently filtering them.  Targeted subgroup evaluation across topics,
+communities, and sparse-thread strata remains necessary before deployment.
+
+\bibliographystyle{../acmart/ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "prepared_on": "2026-10-25",
+  "purpose": "Public UMER background and multi-agent discussion reference; not an execution package",
+  "privacy": "No deployment or connection details, private absolute paths, credentials, raw social content, per-event records, weights, checkpoints or execution logs",
+  "source_areas": {
+    "research_archive": "Read-only prior research documents, selected code and aggregate results",
+    "manuscript_archive": "Read-only existing English manuscript and companion bibliography/audits"
+  },
+  "status_snapshot": "Later exploration status is a historical 2026-10-24 snapshot, partly supplied explicitly by the user; not live verification",
+  "manifest_hash_note": "This manifest does not contain its own hash; Git records its content.",
+  "files": [
+    {
+      "path": "docs/UMER_MODEL_ARCHITECTURE.md",
+      "bytes": 9790,
+      "sha256": "fd49800cb1e73f98c7872b1cc81124a436ce8975e439e1ca276983d61b1a9c16",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "docs/old_plan_md/UMER_MODEL_ARCHITECTURE.md",
+        "source_last_modified": "2026-09-05 16:05:12",
+        "source_sha256": "fd49800cb1e73f98c7872b1cc81124a436ce8975e439e1ca276983d61b1a9c16"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "docs/UMER_EXPERIMENTS.md",
+      "bytes": 5224,
+      "sha256": "7bc21957883cbdd48e1c0abe572fcc492aa14ff5f61d12b391fba3ac98796bd7",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "docs/old_plan_md/UMER_EXPERIMENTS.md",
+        "source_last_modified": "2026-09-05 16:21:27",
+        "source_sha256": "52acef5858e7008d139a768b801c533fbeae0306df8345fdd3ba4747fa04bdeb"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Removed links to private deployment guide and infrastructure-specific instruction."
+      ]
+    },
+    {
+      "path": "docs/history/LLM_INTEGRATION_ATTEMPTS_2026-08.md",
+      "bytes": 16552,
+      "sha256": "68727f2ea70e2b58bfa0b38ece4f3a4068bfa83f1c5614f309da296a5e80f78c",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "docs/old_plan_md/LLM_INTEGRATION_ATTEMPTS.md",
+        "source_last_modified": "2026-09-05 16:21:09",
+        "source_sha256": "992e806ae00586f378a91a017eb05c295c32458e2fba3bd4e80c4a1e6337a97c"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Added historical-scope notice"
+      ]
+    },
+    {
+      "path": "reference_code/round_013_joint_trifusion/model.py",
+      "bytes": 22032,
+      "sha256": "5c2c3ff1235125e4d2f91edab5997e423988dc470a8216661ab7015f9b66705d",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "project/optimization_rounds/round_013_joint_trifusion/model.py",
+        "source_last_modified": "2026-09-05 16:01:30",
+        "source_sha256": "5c2c3ff1235125e4d2f91edab5997e423988dc470a8216661ab7015f9b66705d"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "reference_code/round_013_joint_trifusion/run_fold.py",
+      "bytes": 58170,
+      "sha256": "ec2a695024707664a3bf4a90b8b6c6d477d5ed17afe951d7d7f6fc873e1b82c5",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "project/optimization_rounds/round_013_joint_trifusion/run_fold.py",
+        "source_last_modified": "2026-09-05 16:01:30",
+        "source_sha256": "3269ab100924b042253e42c7dfc41a10d095712fbd3c2aa7883a31065eb9c379"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Two private deployment defaults replaced with generic relative placeholders; historical defaults are not the frozen formal configuration."
+      ]
+    },
+    {
+      "path": "reference_code/sam.py",
+      "bytes": 3598,
+      "sha256": "4c73617c01469956ca627f59fe45ec49a1a509f4832bf6465c68175ed6ce2605",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "project/optimization_rounds/round_032_sam/sam.py",
+        "source_last_modified": "2026-09-05 16:01:33",
+        "source_sha256": "4c73617c01469956ca627f59fe45ec49a1a509f4832bf6465c68175ed6ce2605"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "reference_code/regularization.py",
+      "bytes": 766,
+      "sha256": "107b9646b96e68952e7ee9d8a3cb13f798d91c41c94bc7807df18e2ff096a48e",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "project/optimization_rounds/round_021_cross_view_consistency/regularization.py",
+        "source_last_modified": "2026-09-05 16:01:31",
+        "source_sha256": "107b9646b96e68952e7ee9d8a3cb13f798d91c41c94bc7807df18e2ff096a48e"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "manuscript/main.tex",
+      "bytes": 55460,
+      "sha256": "c76a984d47d2818d551a0631b8be05c6109c9cedab7a58790c1ec59d5a4fe2d7",
+      "origin": {
+        "area": "manuscript_archive",
+        "relative_identifier": "main.tex",
+        "source_last_modified": "2026-08-09 12:17:22",
+        "source_sha256": "c7e4d6dfb88e2a7645e795186a144373f35e6ef78172c21b791c6d8ad3c0f1ba"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "manuscript/references.bib",
+      "bytes": 12910,
+      "sha256": "04921922dfbb63fd968e611aff73ce1ee0061d2bb1b14dc811e5284b0cb3fab0",
+      "origin": {
+        "area": "manuscript_archive",
+        "relative_identifier": "references.bib",
+        "source_last_modified": "2026-07-29 15:38:41",
+        "source_sha256": "04921922dfbb63fd968e611aff73ce1ee0061d2bb1b14dc811e5284b0cb3fab0"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "manuscript/audits/reference_audit.md",
+      "bytes": 16396,
+      "sha256": "f3138388fce550d98ae25bf2f91be029b9268c40157b8127878639a53b297f02",
+      "origin": {
+        "area": "manuscript_archive",
+        "relative_identifier": "reference_audit.md",
+        "source_last_modified": "2026-07-29 14:52:53",
+        "source_sha256": "7d0c881327e7b44ee9f76fcaea987a6bafaaa53e380465f329e71e0cf0f0260f"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Removed deployment wording. All verification claims and conference details are historical; not reverified for this publication.",
+        "Added historical-scope and redaction notice"
+      ]
+    },
+    {
+      "path": "manuscript/audits/pheme_comparison_metrics_audit.md",
+      "bytes": 3796,
+      "sha256": "0627eb88cc58d2a40b9adf4d1f175bbde9cef05f6e0b974874a394aa375820fc",
+      "origin": {
+        "area": "manuscript_archive",
+        "relative_identifier": "pheme_comparison_metrics_audit.md",
+        "source_last_modified": "2026-07-29 17:16:56",
+        "source_sha256": "293891cb892a6b7aa1098fe0428c86167d742899a83295ee3e1b4a6c1da4263c"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Private result locations replaced with logical archive identifiers; scientific qualifications retained.",
+        "Added historical-scope and redaction notice"
+      ]
+    },
+    {
+      "path": "manuscript/audits/maweibo_macro_metrics_audit.md",
+      "bytes": 2516,
+      "sha256": "1dd94fe15253efcbe2a15ff11135ac4bba4d6ab8de8d0d6f92c7a5eadfcd496c",
+      "origin": {
+        "area": "manuscript_archive",
+        "relative_identifier": "maweibo_macro_metrics_audit.md",
+        "source_last_modified": "2026-08-09 12:17:25",
+        "source_sha256": "48c5f2a30b4fd91bcb9eb8b8e067dcb0eff352a54b6d3ea92a9c1f3813b1b630"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Private result location replaced with a logical archive identifier.",
+        "Added historical-scope and redaction notice"
+      ]
+    },
+    {
+      "path": "reference_code/original_model.py",
+      "bytes": 10791,
+      "sha256": "030cdfda7f331aaff1f4ed303bbafcd34b6c0f3e97c1f3f500aae59bae80d96a",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "project/src/rumor_detection/models/original_model.py",
+        "source_last_modified": "2026-09-05 16:01:35",
+        "source_sha256": "030cdfda7f331aaff1f4ed303bbafcd34b6c0f3e97c1f3f500aae59bae80d96a"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/pheme_summary.json",
+      "bytes": 1412,
+      "sha256": "b99bef465074f4304207254858f1cf1816b7a7dd5f0ffb6617a60d60f2fcf43c",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/pheme/authoritative_json/summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "5fea1b459d07522369b2ec2a6369e4c9172465a450d63f2585eeac7db95ba876"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/maweibo_summary.json",
+      "bytes": 1423,
+      "sha256": "d60b581a8aea8a933904af5eb7ac6ce887829525154c18d0278c5c13bacbca04",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/maweibo/authoritative_json/summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "2dfb3a101983356d803ecd40262fdb96eb667988e83099369290701bfb43752a"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/pheme_ablation/no_consistency_summary.json",
+      "bytes": 1437,
+      "sha256": "f1f470711f8214d680e3f3c7740a39df5480f0845a8262122fe28ea930996dcd",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/pheme/ablation_json/no_consistency_summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "a3380597bb2d968bca83b7229b33fee74917657b3d773e05ccdeb2fc83f68f71"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/pheme_ablation/no_graph_summary.json",
+      "bytes": 1417,
+      "sha256": "59a7ff21e177ad418b15f537b32a1c1292b62dfae319786cbc68b8d8fa29dbf6",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/pheme/ablation_json/no_graph_summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "9b0ca5783388cd19ea07a5585526b6d73289c0184d318f9304f69cde06014ac0"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/pheme_ablation/no_memory_summary.json",
+      "bytes": 1433,
+      "sha256": "33475b68d99e9522c7a8a69ac8a3698161aca54441ccd9d65d308252188cee41",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/pheme/ablation_json/no_memory_summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "846972595c5c6519b5235c9d7b4a91dabecd2e7bfe69cca199b210fe529394cf"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "results/pheme_ablation/no_text_summary.json",
+      "bytes": 1429,
+      "sha256": "a367808a46d813f19b67b2349438c9de5b8049131d4889883b0dcd0be4607b3a",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "results/pheme/ablation_json/no_text_summary.json",
+        "source_last_modified": "2026-09-05 16:01:49",
+        "source_sha256": "8ea4b2b5ea9f6b302d82b32daf5f07e896497f0b1c5ac20a4905486df0cd1182"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline"
+      ]
+    },
+    {
+      "path": "docs/history/NEAREST_NEIGHBOR_METHOD_AUDIT_2026-10-24.md",
+      "bytes": 3685,
+      "sha256": "b0b6565809b581ee2047c910e8811b2f3eebe9ca0ccc310c31fa4c5a184af402",
+      "origin": {
+        "area": "research_archive",
+        "relative_identifier": "parallel_work_2026-10-22/02_research/NEAREST_NEIGHBOR_METHOD_AUDIT_2026-10-24.md",
+        "source_last_modified": "2026-10-24 04:38:51",
+        "source_sha256": "116f5ab7f4692766676fbbfbd8711d0bc08c79b61948a4c8aafa3a52c68822f6"
+      },
+      "processing": [
+        "UTF-8 text; normalized LF and terminal newline",
+        "Added historical-scope notice"
+      ]
+    },
+    {
+      "path": "README.md",
+      "bytes": 3533,
+      "sha256": "1a49edd8a0da06dbc3209c3919f84b85687ef98722db51f9d94180e70e06e267",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "docs/START_HERE.md",
+      "bytes": 3984,
+      "sha256": "b24a48edfe33f0aaa0409c0725e7cb94c4784e1928a274c85923bf323c328be8",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "docs/RESEARCH_STATUS_2026-10-24.md",
+      "bytes": 3797,
+      "sha256": "15e2d749e04c55cf35185af619a8e761ed7c20ff8350d329fee141b0e02cc9e8",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "docs/KNOWN_DIFFERENCES.md",
+      "bytes": 2314,
+      "sha256": "16c8d6b32321079a3fba19564296e6b72c301126ae05ab094297908ff0544db8",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "manuscript/README.md",
+      "bytes": 1533,
+      "sha256": "725cecd2ef174de391283ae8feda15b6f114e721a66669143de825a51a3483bd",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "reference_code/README.md",
+      "bytes": 1602,
+      "sha256": "07491bd3f94b2610824e6009d1dc0a732d8dca32009322fb88b31ad6e2837634",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "results/README.md",
+      "bytes": 1268,
+      "sha256": "209dac7f5785d28fec35257ee0ddc8335877e3707475434f71106dbd01b542a0",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "DISCUSSION_PROTOCOL.md",
+      "bytes": 2044,
+      "sha256": "6e504e86204e88a3ab60a01f105c0b84f1029eeee49f9c81210ae6a2787a481f",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1351,
+      "sha256": "b13c18b694edc9d4403019b0fd9fe4761b2a43398b9715c2288571eba2ca2adf",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/research_question.md",
+      "bytes": 826,
+      "sha256": "b18bedc89e64af915ad0faa0126159bd375b1d0fe926075296eea8b3fe981a3f",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 751,
+      "sha256": "3dd0c7a01e32bac33422933075c54d4ca993026a493c69bff66e49d205d3864d",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": ".gitattributes",
+      "bytes": 19,
+      "sha256": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    },
+    {
+      "path": "docs/PRIVACY_AND_PROVENANCE.md",
+      "bytes": 3377,
+      "sha256": "115612c331af3ce82950f2bc75c443282bfb8c0131155b827212f59f918d9d1e",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Prepared from materials read in this chat and the user's scope/constraints"
+      },
+      "processing": [
+        "New explanatory or collaboration document; no new experimental result"
+      ]
+    }
+  ]
+}
