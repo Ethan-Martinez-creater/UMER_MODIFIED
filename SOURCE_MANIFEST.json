@@ -70,8 +70,8 @@
     },
     {
       "path": "reference_code/round_013_joint_trifusion/run_fold.py",
-      "bytes": 58170,
-      "sha256": "ec2a695024707664a3bf4a90b8b6c6d477d5ed17afe951d7d7f6fc873e1b82c5",
+      "bytes": 57165,
+      "sha256": "20e9c6b71079d4f47e9dcdd768a2996c849ea490f3b9f0791ffdd56a97c6248f",
       "origin": {
         "area": "research_archive",
         "relative_identifier": "project/optimization_rounds/round_013_joint_trifusion/run_fold.py",
@@ -80,8 +80,15 @@
       },
       "processing": [
         "UTF-8 text; normalized LF and terminal newline",
-        "Two private deployment defaults replaced with generic relative placeholders; historical defaults are not the frozen formal configuration."
-      ]
+        "Two private deployment defaults replaced with generic relative placeholders; historical defaults are not the frozen formal configuration.",
+        "Reconstructed directly from the unchanged original and compared in-process; private defaults remain sanitized where applicable."
+      ],
+      "correction": {
+        "date": "2026-10-25",
+        "previous_published_sha256": "ec2a695024707664a3bf4a90b8b6c6d477d5ed17afe951d7d7f6fc873e1b82c5",
+        "previous_published_bytes": 58170,
+        "reason": "Repair accidental text-transfer corruption against unchanged original; see docs/CORRIGENDUM_2026-10-25.md"
+      }
     },
     {
       "path": "reference_code/sam.py",
@@ -113,8 +120,8 @@
     },
     {
       "path": "manuscript/main.tex",
-      "bytes": 55460,
-      "sha256": "c76a984d47d2818d551a0631b8be05c6109c9cedab7a58790c1ec59d5a4fe2d7",
+      "bytes": 56215,
+      "sha256": "c7e4d6dfb88e2a7645e795186a144373f35e6ef78172c21b791c6d8ad3c0f1ba",
       "origin": {
         "area": "manuscript_archive",
         "relative_identifier": "main.tex",
@@ -122,8 +129,15 @@
         "source_sha256": "c7e4d6dfb88e2a7645e795186a144373f35e6ef78172c21b791c6d8ad3c0f1ba"
       },
       "processing": [
-        "UTF-8 text; normalized LF and terminal newline"
-      ]
+        "UTF-8 text; normalized LF and terminal newline",
+        "Reconstructed directly from the unchanged original and compared in-process; private defaults remain sanitized where applicable."
+      ],
+      "correction": {
+        "date": "2026-10-25",
+        "previous_published_sha256": "c76a984d47d2818d551a0631b8be05c6109c9cedab7a58790c1ec59d5a4fe2d7",
+        "previous_published_bytes": 55460,
+        "reason": "Repair accidental text-transfer corruption against unchanged original; see docs/CORRIGENDUM_2026-10-25.md"
+      }
     },
     {
       "path": "manuscript/references.bib",
@@ -455,6 +469,20 @@
       "processing": [
         "New explanatory or collaboration document; no new experimental result"
       ]
+    },
+    {
+      "path": "docs/CORRIGENDUM_2026-10-25.md",
+      "bytes": 2622,
+      "sha256": "74722c01b7abcbd22f61adce800b7b9205e73d35a3634c5d346f4bc3267b35ef",
+      "origin": {
+        "area": "new_collaboration_document",
+        "basis": "Native source-to-publication comparison of the 20 imported files after declared transformations"
+      },
+      "processing": [
+        "New corrective record; not an experimental result"
+      ]
     }
-  ]
+  ],
+  "last_corrected_on": "2026-10-25",
+  "initial_background_commit": "d71e5b7595deba3a6e7cbc53e8cc98d1b6944334"
 }

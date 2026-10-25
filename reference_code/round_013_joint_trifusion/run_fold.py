@@ -1220,7 +1220,25 @@ def main():
     if args.protocol_smoke_no_test:
         test_metrics = None
     else:
-        _, test_metrics = evage": cognitive_train_coverage,
+        _, test_metrics = evaluate(
+            model,
+            test_loader,
+            device,
+            threshold=checkpoint["threshold"],
+            graph_aux_weight=args.graph_aux_weight,
+            text_aux_weight=args.text_aux_weight,
+        )
+    result = {
+        "scheme": args.scheme,
+        "initialization": args.initialization,
+        "task_checkpoint_initialization": args.initialization == "warm_start",
+        "view_strategy": args.view_strategy,
+        "fusion_type": args.fusion_type,
+        "ablate_evidence": args.ablate_evidence,
+        "graph_aux_weight": args.graph_aux_weight,
+        "text_aux_weight": args.text_aux_weight,
+        "cognitive_aux_weight": args.cognitive_aux_weight,
+        "cognitive_train_coverage": cognitive_train_coverage,
         "cognitive_target_report": cognitive_report,
         "node_cognitive_aux_weight": args.node_cognitive_aux_weight,
         "node_cognitive_train_coverage": node_cognitive_train_coverage,
@@ -1256,150 +1274,93 @@ def main():
             ["training_only_cognitive_head"]
             if model.cognitive_head is not None
             else []
-           nhead=8,
-            dim_feedforward=hidden_dim * 6,
-            dropout=dropout_rate,
-            activation="gelu",
-            batch_first=True,
-            norm_first=True,
         )
-        try:
-            self.struct_transformer = nn.TransformerEncoder(
-                encoder_layer, num_layers=1, enable_nested_tensor=False
-            )
-        except TypeError:
-            self.struct_transformer = nn.TransformerEncoder(
-                encoder_layer, num_layers=1
-            )
-        self.use_max_readout = False
-        self.readout_projection = nn.Sequential(
-            nn.Linear(self.d_model * 2, self.d_model),
-            nn.LayerNorm(self.d_model),
-            nn.GELU(),
-            nn.Dropout(dropout_rate),
-        )
+        + (
+            ["training_only_node_cognitive_head"]
+            if model.node_cognitive_head is not None
+            else []
+        ),
+        "retrieval_memory_scope": (
+            "full_outer_train_buffer_leave_one_out"
+            if args.refit_full_outer_train
+            else "strict_train_fold_buffer_leave_one_out"
+        ),
+        "physical_batch_size": train_batch_size,
+        "train_view_count": args.train_view_count,
+        "classification_view_count": (
+            args.classification_view_count or args.train_view_count
+        ),
+        "sequences_per_step": train_batch_size * (
+            args.train_view_count + args.teacher_view_count
+        ),
+        "gradient_accumulation_steps": accumulation,
+        "effective_batch_size": 64,
+        "learning_rates": {
+            "graph": args.graph_lr,
+            "deberta": args.text_lr,
+            "fusion": args.fusion_lr,
+            "cognitive_head": (
+                args.graph_lr if model.cognitive_head is not None else None
+            ),
+            "node_cognitive_head": (
+                args.graph_lr if model.node_cognitive_head is not None else None
+            ),
+        },
+        "text_layerwise_lr_decay": args.text_layerwise_lr_decay,
+        "rdrop_weight": args.rdrop_weight,
+        "view_consistency_weight": args.view_consistency_weight,
+        "checkpoint_average_top_k": args.checkpoint_average_top_k,
+        "checkpoint_selection": args.checkpoint_selection,
+        "selected_checkpoint_kind": selected_checkpoint_kind,
+        "selected_source_epochs": selected_source_epochs,
+        "averaging_candidates": averaging_candidates,
+        "class_weight_power": args.class_weight_power,
+        "class_weights": (
+            class_weights.detach().cpu().tolist() if class_weights is not None
+            else [1.0, 1.0]
+        ),
+        "group_dro": (
+            {
+                "step_size": args.group_dro_step_size,
+                "update_scope": "effective_event_batch_64",
+                "initial_distribution": "empirical_training_group_frequency",
+                "loss_scope": "final_plus_0.15_graph_plus_0.15_text",
+                "consistency_scope": "ordinary_batch_mean",
+                "group_definition": group_definition.as_dict(),
+                "final_state": group_dro.snapshot(group_definition.names),
+            }
+            if group_dro is not None
+            else None
+        ),
+        "sam": (
+            {
+                "rho": args.sam_rho,
+                "base_optimizer": "AdamW",
+                "perturbation_scope": "all_trainable_parameters",
+                "first_pass_scope": "effective_event_batch_64",
+                "second_pass_scope": "same_replayed_effective_event_batch_64",
+                "torch_rng_replayed": True,
+                "graph_and_text_views_replayed": True,
+                "gradient_clip_scope": "second_pass_only",
+            }
+            if sam_controller is not None
+            else None
+        ),
+        "threshold": checkpoint["threshold"],
+        "test_evaluated": not args.protocol_smoke_no_test,
+        "metrics": test_metrics,
+    }
+    (run_dir / "history.json").write_text(
+        json.dumps(history, indent=2), encoding="utf-8"
+    )
+    result_filename = (
+        "smoke_result.json" if args.protocol_smoke_no_test else "result.json"
+    )
+    (run_dir / result_filename).write_text(
+        json.dumps(result, indent=2), encoding="utf-8"
+    )
+    print(json.dumps(result, indent=2), flush=True)
 
-    def forward(
-        self, node_feats, struct_feats, num_nodes, return_node_features=False
-    ):
-        device = node_feats.device
-        batch_size, max_nodes, _ = node_feats.shape
-        if node_feats.size(-1) < self.node_feat_dim:
-            raise ValueError(
-                f"Expected at least {self.node_feat_dim} node features, "
-                f"got {node_feats.size(-1)}"
-            )
-        node_feats = node_feats[..., :self.node_feat_dim]
-        valid_nodes = (
-            torch.arange(max_nodes, device=device)[None, :]
-            < num_nodes.clamp(min=0, max=max_nodes)[:, None]
-        )
-        base_tokens = self.node_projection(node_feats)
-        base_tokens = base_tokens + self.struct_projection(struct_feats)
-        node_tokens = self.token_dropout(self.token_norm(base_tokens))
-        cls_token = self.s_cls_token.expand(batch_size, 1, -1)
-        sequence = torch.cat([cls_token, node_tokens], dim=1)
-        cls_mask = torch.zeros(
-            batch_size, 1, dtype=torch.bool, device=device
-        )
-        padding_mask = torch.cat([cls_mask, ~valid_nodes], dim=1)
-        output = self.struct_transformer(
-            sequence, src_key_padding_mask=padding_mask
-        )
-        cls_out = output[:, 0, :]
-        node_out = output[:, 1:, :]
-        valid_float = valid_nodes.unsqueeze(-1).to(node_out.dtype)
-        denom = valid_float.sum(dim=1).clamp_min(1.0)
-        mean_pool = (node_out * valid_float).sum(dim=1) / denom
-        event_features = self.readout_projection(
-            torch.cat([cls_out, mean_pool], dim=-1)
-        )
-        if return_node_features:
-            return event_features, node_out
-        return event_features
 
-
-class OriginalRumorDetector(nn.Module):
-    """The only model supported by this project."""
-
-    def __init__(self, num_classes=2, hidden_dim=256, text_feat_dim=384,
-                 extra_feat_dim=11, struct_feat_dim=1024,
-                 dropout_rate=0.35):
-        super().__init__()
-        self.d_model = hidden_dim * 3
-        self.node_feat_dim = text_feat_dim + extra_feat_dim
-        self.node_token_branch = NodeTokenSetEncoder(
-            hidden_dim=hidden_dim,
-            output_dim=self.d_model,
-            dropout_rate=dropout_rate,
-        )
-        self.graph_dropout = nn.Dropout(dropout_rate * 0.6)
-        self.graph_branch = OriginalGraphBranch(
-            node_feat_dim=self.node_feat_dim,
-            struct_feat_dim=struct_feat_dim,
-            hidden_dim=hidden_dim,
-            dropout_rate=dropout_rate,
-        )
-        self.fusion_proj = nn.Sequential(
-            nn.Linear(self.d_model * 2, self.d_model),
-            nn.LayerNorm(self.d_model),
-            nn.Dropout(dropout_rate),
-        )
-        self.classifier = nn.Sequential(
-            nn.LayerNorm(self.d_model),
-            nn.Dropout(dropout_rate * 0.8),
-            nn.Linear(self.d_model, num_classes),
-        )
-
-    def encode_event(
-        self, node_feats, struct_feats, num_nodes, return_node_features=False
-    ):
-        node_token_feat = self.node_token_branch(
-            node_feats, struct_feats, num_nodes
-        )
-        graph_output = self.graph_branch(
-            node_feats,
-            struct_feats,
-            num_nodes,
-            return_node_features=return_node_features,
-        )
-        if return_node_features:
-            graph_feat, node_features = graph_output
-        else:
-            graph_feat = graph_output
-            node_features = None
-        graph_feat = self.graph_dropout(graph_feat)
-        event_features = self.fusion_proj(
-            torch.cat([node_token_feat, graph_feat], dim=-1)
-        )
-        if return_node_features:
-            return event_features, node_features
-        return event_features
-
-    def forward(
-        self,
-        node_feats,
-        struct_feats,
-        num_nodes,
-        return_features=False,
-        return_node_features=False,
-    ):
-        encoded = self.encode_event(
-            node_feats,
-            struct_feats,
-            num_nodes,
-            return_node_features=return_node_features,
-        )
-        if return_node_features:
-            fused, node_features = encoded
-        else:
-            fused = encoded
-            node_features = None
-        logits = self.classifier(fused)
-        if return_features and return_node_features:
-            return logits, fused, node_features
-        if return_features:
-            return logits, fused
-        if return_node_features:
-            return logits, node_features
-        return logits
+if __name__ == "__main__":
+    main()

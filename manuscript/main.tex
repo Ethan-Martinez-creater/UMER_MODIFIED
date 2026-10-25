@@ -137,7 +137,18 @@ components are learned through multiple supervised objectives and stochastic
 event representations, whose variation becomes especially important under
 gradient accumulation. Prediction-level consistency methods such as
 R-Drop~\cite{liang2021rdrop} show that stochastic views can be regularized by
-encouraging agreement between their oant
+encouraging agreement between their output distributions. Sharpness-Aware
+Minimization (SAM), from a complementary perspective, favors parameters whose
+performance remains stable under small perturbations~\cite{foret2021sam}.
+Standard SAM relies on two evaluations of the same optimization objective.
+Without explicit replay of an accumulated stochastic batch, however, its two
+passes may use different event views or random masks, conflating stochastic
+view variation with parameter sensitivity.
+
+We address these challenges with UMER. Figure~\ref{fig:architecture}
+provides an overview from left to right: an event is processed through three
+complementary evidence channels and their outputs are combined by a jointly
+trained fusion head. The propagation channel combines permutation-invariant
 node-content encoding with a structural Transformer to represent
 conversations of varying sizes and topologies. The event-text channel encodes
 two label-preserving serializations using a shared DeBERTa-v3-large encoder
