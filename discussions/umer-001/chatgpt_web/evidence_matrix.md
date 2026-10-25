@@ -36,7 +36,7 @@
 | L08 | He et al. **Rumor Detection on Social Media with Event Augmentations**，**SIGIR 2021 正式发表**。[DOI](https://doi.org/10.1145/3404835.3463001) | 公开论文元数据/摘要；**未读全部正文**，不能推断具体增强公式或协议 | 事件增强既有方法；UMER 四种确定性视图与原文增强应在正式创新主张前逐一核验 | A：广义“事件级数据增强”不能独占为新贡献 |
 | L09 | Li & Scarton **Can We Identify Stance without Target Arguments? A Study for Rumour Stance Classification**，**LREC-COLING 2024 正式发表**。[ACL Anthology](https://aclanthology.org/2024.lrec-main.253/) | 页面摘要/任务定义；rumour **stance** 分类，不是事件 rumor/non-rumor | 判别回复立场的任务与 UMER 事件二分类不同；可辅助理解立场信息，不能用 stance 标签替代事件标签 | A/C：**范围排除**，不作为直接机制第一近邻 |
 | L10 | Dougrez-Lewis et al. **Knowledge Graphs for Real-World Rumour Verification**，**LREC-COLING 2024 正式发表**。[ACL Anthology](https://aclanthology.org/2024.lrec-main.860/) | 论文页与摘要/任务；涉及外部 KG 信息验证 | 显式事实验证超出本轮维持事件二分类的范围 | **排除外部事实核查主线**，不作为近邻机制 |
-| L11 | Yang et al. **Large Language Models for Rumour Stance Classification**（或文献同类 LLM 立场研究），**Findings of ACL 2024 正式**。[ACL Anthology](https://aclanthology.org/2024.findings-acl.796/) | 仅查询命中与摘要，**没有**全文分析 | LLM 生成/立场推理不是用户本轮研究方向 | **范围排除**，不能由不成功的历史 LLM 推出所有 LLM 不可用 |
+| L11 | Yang et al. **Reinforcement Tuning for Detecting Stances and Debunking Rumors Jointly with Large Language Models**，**Findings of ACL 2024 正式**。[ACL Anthology](https://aclanthology.org/2024.findings-acl.796/) | 仅查询命中与摘要，**没有**全文分析 | LLM 生成/立场推理不是用户本轮研究方向 | **范围排除**，不能由历史未成功的特定 LLM 路线推出所有 LLM 不可用 |
 
 ## C. 证据链判定与优先验证的反例
 
