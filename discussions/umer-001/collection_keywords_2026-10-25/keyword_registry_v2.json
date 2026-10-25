@@ -1,0 +1,962 @@
+{
+  "schema_version": "2.0",
+  "created_on": "2026-10-25",
+  "purpose_zh": "检索入口；不是已核验样本或标签。执行边界以同目录完整任务书为准。",
+  "task_file": "MUSE_COLLECTION_TASK_v2.md",
+  "platforms": [
+    "weibo",
+    "xiaohongshu",
+    "zhihu",
+    "douyin",
+    "tieba",
+    "x"
+  ],
+  "source_post_window": [
+    "2025-01-01",
+    "2026-09-30"
+  ],
+  "status_definitions": {
+    "E": "来源讨论具体流传说法；新帖仍需逐项核验",
+    "T": "主题或技术背景；不是具体新帖标签",
+    "Q": "待核验查询建议；未确认本轮具体依据"
+  },
+  "keyword_families": [
+    {
+      "keyword_family_id": "K01",
+      "domain_id": "D1",
+      "topic_zh": "冷冻馒头",
+      "queries_zh": [
+        "馒头 冷冻 三天",
+        "馒头 冻融 霉菌"
+      ],
+      "query_en": "frozen steamed buns storage mold",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S01"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K02",
+      "domain_id": "D1",
+      "topic_zh": "常温奶保质期",
+      "queries_zh": [
+        "常温牛奶 保质期 防腐剂",
+        "纯牛奶 灭菌 保存"
+      ],
+      "query_en": "UHT milk shelf life preservatives",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S01"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K03",
+      "domain_id": "D1",
+      "topic_zh": "西瓜甜度",
+      "queries_zh": [
+        "西瓜 甜味剂",
+        "西瓜 甜度 成熟"
+      ],
+      "query_en": "watermelon sweetness sweetener injection",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S02"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K04",
+      "domain_id": "D1",
+      "topic_zh": "食品标签",
+      "queries_zh": [
+        "食品 配料表 添加剂",
+        "营养标签 无糖 零糖"
+      ],
+      "query_en": "food ingredient label sugar free additives",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S03"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K05",
+      "domain_id": "D1",
+      "topic_zh": "发酵与储存",
+      "queries_zh": [
+        "酸菜 发酵 亚硝酸盐",
+        "泡菜 储存 时间"
+      ],
+      "query_en": "fermented vegetables nitrite storage",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S04"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K06",
+      "domain_id": "D2",
+      "topic_zh": "不锈钢磁性",
+      "queries_zh": [
+        "304不锈钢 磁铁",
+        "316不锈钢 磁性"
+      ],
+      "query_en": "stainless steel 304 316 magnetic",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S05"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K07",
+      "domain_id": "D2",
+      "topic_zh": "餐盒耐热",
+      "queries_zh": [
+        "塑料餐盒 PP 微波炉",
+        "PET 餐盒 耐热"
+      ],
+      "query_en": "microwave safe plastic PP PET container",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S06"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K08",
+      "domain_id": "D2",
+      "topic_zh": "空调能耗",
+      "queries_zh": [
+        "空调 除湿 制冷 耗电",
+        "空调 除湿 更省电"
+      ],
+      "query_en": "air conditioner dry mode cooling electricity",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K09",
+      "domain_id": "D2",
+      "topic_zh": "冰箱与杀菌",
+      "queries_zh": [
+        "冰箱 冷藏 杀菌",
+        "冰箱 冷冻 细菌"
+      ],
+      "query_en": "refrigerator freezing bacteria sterilize",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K10",
+      "domain_id": "D2",
+      "topic_zh": "净化器与通风",
+      "queries_zh": [
+        "空气净化器 甲醛 滤芯",
+        "除甲醛 通风 净化器"
+      ],
+      "query_en": "air purifier formaldehyde filter ventilation",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K11",
+      "domain_id": "D3",
+      "topic_zh": "充电宝产品信息",
+      "queries_zh": [
+        "充电宝 CCC 型号",
+        "充电宝 召回 电芯"
+      ],
+      "query_en": "power bank certification recall battery model",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S07"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K12",
+      "domain_id": "D3",
+      "topic_zh": "快充与电池",
+      "queries_zh": [
+        "手机 快充 电池寿命",
+        "充电 80% 电池 发热"
+      ],
+      "query_en": "fast charging battery lifespan 80 percent heat",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S08"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K13",
+      "domain_id": "D3",
+      "topic_zh": "无线充电",
+      "queries_zh": [
+        "无线充电 发热 效率",
+        "无线充电 充电速度"
+      ],
+      "query_en": "wireless charging heat efficiency speed",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S08"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K14",
+      "domain_id": "D3",
+      "topic_zh": "蓝牙耳机功率",
+      "queries_zh": [
+        "蓝牙耳机 微波 功率",
+        "无线耳机 2.4GHz"
+      ],
+      "query_en": "wireless earbuds microwave power 2.4 GHz",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S09"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K15",
+      "domain_id": "D3",
+      "topic_zh": "屏幕蓝光",
+      "queries_zh": [
+        "屏幕 蓝光 护眼模式",
+        "手机 蓝光 亮度"
+      ],
+      "query_en": "screen blue light night mode brightness",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S10"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K16",
+      "domain_id": "D4",
+      "topic_zh": "驾驶功能边界",
+      "queries_zh": [
+        "辅助驾驶 自动驾驶 区别",
+        "辅助驾驶 脱手 接管"
+      ],
+      "query_en": "driver assistance autonomous driving hands off",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S11"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K17",
+      "domain_id": "D4",
+      "topic_zh": "动力电池测试",
+      "queries_zh": [
+        "动力电池 热扩散 测试",
+        "电池 安全测试 不起火"
+      ],
+      "query_en": "EV battery thermal propagation safety test",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S12"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K18",
+      "domain_id": "D4",
+      "topic_zh": "空调与续航",
+      "queries_zh": [
+        "电动车 空调 高温 续航",
+        "汽车 空调 能耗"
+      ],
+      "query_en": "electric vehicle air conditioning hot weather range",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K19",
+      "domain_id": "D4",
+      "topic_zh": "轮胎使用条件",
+      "queries_zh": [
+        "轮胎 胎压 高温",
+        "轮胎 年限 磨损"
+      ],
+      "query_en": "tire pressure hot weather tire age wear",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S13"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K20",
+      "domain_id": "D4",
+      "topic_zh": "电动自行车电池",
+      "queries_zh": [
+        "电动自行车 电池 充电",
+        "电动自行车 电池 混用"
+      ],
+      "query_en": "e bike battery charging compatibility",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S14"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K21",
+      "domain_id": "D5",
+      "topic_zh": "云与地震",
+      "queries_zh": [
+        "地震云 云彩",
+        "彩云 地震 关联"
+      ],
+      "query_en": "earthquake clouds iridescent clouds prediction",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S15"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K22",
+      "domain_id": "D5",
+      "topic_zh": "预警与预测",
+      "queries_zh": [
+        "地震 预警 预测 区别",
+        "地震预警 提前 时间"
+      ],
+      "query_en": "earthquake early warning prediction difference",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S16"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K23",
+      "domain_id": "D5",
+      "topic_zh": "雷雨与手机",
+      "queries_zh": [
+        "雷雨 手机 引雷",
+        "打雷 手机 信号"
+      ],
+      "query_en": "thunderstorm mobile phone attracts lightning",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K24",
+      "domain_id": "D5",
+      "topic_zh": "龙卷风机制",
+      "queries_zh": [
+        "龙卷风 形成 风切变",
+        "龙卷风 大小 风力"
+      ],
+      "query_en": "tornado formation wind shear size intensity",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S17"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K25",
+      "domain_id": "D5",
+      "topic_zh": "强对流机制",
+      "queries_zh": [
+        "冷涡 强对流",
+        "冷暖气流 雷暴"
+      ],
+      "query_en": "cold vortex severe convection thunderstorm",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S18"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K26",
+      "domain_id": "D6",
+      "topic_zh": "超级月亮大小",
+      "queries_zh": [
+        "超级月亮 大小",
+        "月亮 地平线 变大"
+      ],
+      "query_en": "supermoon size moon illusion horizon",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S19"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K27",
+      "domain_id": "D6",
+      "topic_zh": "蓝月颜色",
+      "queries_zh": [
+        "蓝月亮 颜色",
+        "蓝月 是否 蓝色"
+      ],
+      "query_en": "blue moon actually blue color",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S20"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K28",
+      "domain_id": "D6",
+      "topic_zh": "月食颜色",
+      "queries_zh": [
+        "月全食 红色 原因",
+        "红月亮 散射"
+      ],
+      "query_en": "lunar eclipse red color scattering",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S21"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K29",
+      "domain_id": "D6",
+      "topic_zh": "流星雨可见性",
+      "queries_zh": [
+        "流星雨 每小时 肉眼",
+        "流星雨 月光 观测条件"
+      ],
+      "query_en": "meteor shower hourly rate moonlight visibility",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S22"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K30",
+      "domain_id": "D6",
+      "topic_zh": "极光肉眼与照片",
+      "queries_zh": [
+        "极光 肉眼 手机 照片",
+        "极光 颜色 曝光"
+      ],
+      "query_en": "aurora naked eye camera color exposure",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S23"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K31",
+      "domain_id": "D7",
+      "topic_zh": "蓝眼泪",
+      "queries_zh": [
+        "蓝眼泪 藻类 发光",
+        "蓝眼泪 形成 条件"
+      ],
+      "query_en": "blue tears bioluminescence algae conditions",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S24"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K32",
+      "domain_id": "D7",
+      "topic_zh": "绿植与辐射",
+      "queries_zh": [
+        "仙人掌 防辐射",
+        "绿植 电脑 辐射"
+      ],
+      "query_en": "cactus plants computer radiation shielding",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S25"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K33",
+      "domain_id": "D7",
+      "topic_zh": "蜉蝣生命周期",
+      "queries_zh": [
+        "蜉蝣 寿命 一天",
+        "蜉蝣 幼虫 生命周期"
+      ],
+      "query_en": "mayfly lifespan one day nymph life cycle",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S26"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K34",
+      "domain_id": "D7",
+      "topic_zh": "昆虫结构色",
+      "queries_zh": [
+        "甲虫 结构色 色素",
+        "昆虫 颜色 光线"
+      ],
+      "query_en": "beetle structural color pigment light",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S27"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K35",
+      "domain_id": "D7",
+      "topic_zh": "超声波驱蚊",
+      "queries_zh": [
+        "超声波 驱蚊 效果",
+        "驱蚊器 超声波"
+      ],
+      "query_en": "ultrasonic mosquito repellent effectiveness",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S28"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K36",
+      "domain_id": "D8",
+      "topic_zh": "水印与来源",
+      "queries_zh": [
+        "AI图片 可见水印 数字水印",
+        "无水印 图片 真实"
+      ],
+      "query_en": "AI image invisible watermark no watermark authentic",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S29"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K37",
+      "domain_id": "D8",
+      "topic_zh": "罕见昆虫视频",
+      "queries_zh": [
+        "莲花螳螂 视频",
+        "罕见昆虫 AI 实拍"
+      ],
+      "query_en": "lotus mantis rare insect AI real footage",
+      "evidence_entry_status": "E",
+      "source_ids": [
+        "S30"
+      ],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K38",
+      "domain_id": "D8",
+      "topic_zh": "动物照片时间",
+      "queries_zh": [
+        "动物照片 旧图 新传",
+        "野生动物 原图 拍摄时间"
+      ],
+      "query_en": "wildlife photo old image original date",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K39",
+      "domain_id": "D8",
+      "topic_zh": "动物视频真伪",
+      "queries_zh": [
+        "动物视频 AI 真实",
+        "动物 动作 连续性 视频"
+      ],
+      "query_en": "animal video AI generated authentic motion",
+      "evidence_entry_status": "Q",
+      "source_ids": [],
+      "is_verified_sample_label": false
+    },
+    {
+      "keyword_family_id": "K40",
+      "domain_id": "D8",
+      "topic_zh": "拍摄与生成混淆",
+      "queries_zh": [
+        "风景照片 长曝光 AI",
+        "照片 调色 合成 实拍"
+      ],
+      "query_en": "landscape photo long exposure editing AI generated",
+      "evidence_entry_status": "T",
+      "source_ids": [
+        "S31"
+      ],
+      "is_verified_sample_label": false
+    }
+  ],
+  "source_entries": [
+    {
+      "source_id": "S01",
+      "links": [
+        {
+          "title": "食品安全流言榜，2025-01-23",
+          "url": "https://www.piyao.org.cn/20250123/22234506f4664331b0ce4b0b61165947/c.html"
+        }
+      ],
+      "scope_note_zh": "明确出现冷冻馒头和常温奶相关说法；不同产品/条件另核验",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S02",
+      "links": [
+        {
+          "title": "科普中国食品安全误区",
+          "url": "https://piyao.kepuchina.cn/hotlist/banddetail?id=NDWz"
+        }
+      ],
+      "scope_note_zh": "西瓜甜味剂类入口，不预判每个具体产品",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S03",
+      "links": [
+        {
+          "title": "国家卫健委食品标签相关标准公告",
+          "url": "https://www.nhc.gov.cn/sps/c100088/202503/e8a432507f7d4f08a877e76a9b0578ce.shtml"
+        }
+      ],
+      "scope_note_zh": "标签术语背景；发布与实施日期、适用范围须分别核验",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S04",
+      "links": [
+        {
+          "title": "包装榨菜、泡菜亚硝酸盐调查研究",
+          "url": "https://manu61.magtech.com.cn/zgnz/fileup/0254-5071/HTML/%E4%B8%AD%E5%9B%BD%E9%85%BF%E9%80%A0202104033.html"
+        }
+      ],
+      "scope_note_zh": "实测研究背景，不推广为所有家庭工艺的结论",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S05",
+      "links": [
+        {
+          "title": "腐蚀数据平台不锈钢科普",
+          "url": "https://www.corrdata.org.cn/news/science/2019-02-14/171899.html"
+        }
+      ],
+      "scope_note_zh": "材料磁性和工艺条件背景，不提供商品真伪标签",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S06",
+      "links": [
+        {
+          "title": "市场监管总局塑料产品使用提示",
+          "url": "https://www.samr.gov.cn/zljds/xfzn/art/2023/art_cf41732ce0de46f7af4e5abe3b18a339.html"
+        }
+      ],
+      "scope_note_zh": "材料、适用标识与说明书条件，不把 PP 直接当所有场景安全证明",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S07",
+      "links": [
+        {
+          "title": "充电宝 CCC 问答",
+          "url": "https://legalinfo.moj.gov.cn/zhfxfzzx/fzzxyw/202507/t20250704_522177.html"
+        }
+      ],
+      "scope_note_zh": "产品认证信息入口，不采治理评价或身份争执",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S08",
+      "links": [
+        {
+          "title": "Apple 充电与维护说明",
+          "url": "https://support.apple.com/zh-cn/105105"
+        },
+        {
+          "title": "充电速度说明",
+          "url": "https://support.apple.com/zh-cn/120619"
+        }
+      ],
+      "scope_note_zh": "厂商对具体设备的技术说明，不能独立泛化到所有电池",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S09",
+      "links": [
+        {
+          "title": "AFP 耳机与微波功率说法核查，2025-04-10",
+          "url": "https://factcheck.afp.com/doc.afp.com.39H47CP"
+        }
+      ],
+      "scope_note_zh": "具体传播说法入口，聚焦功率/频率，不采个体疾病结论",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S10",
+      "links": [
+        {
+          "title": "国家卫健委发布会实录，2025-06-05",
+          "url": "https://www.nhc.gov.cn/xcs/c100122/202506/a731e5672ddc45cea7c85ecf90821889.shtml"
+        }
+      ],
+      "scope_note_zh": "屏幕蓝光背景；不采个人病历或给医疗建议",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S11",
+      "links": [
+        {
+          "title": "工信部组合驾驶辅助相关标准说明",
+          "url": "https://www.miit.gov.cn/jgsj/zbys/gzdt/art/2026/art_597aed2718264440a0caa19e883f8d74.html"
+        }
+      ],
+      "scope_note_zh": "功能边界背景，发布不等于已实施，也不是任何车型能力证明",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S12",
+      "links": [
+        {
+          "title": "动力蓄电池安全要求标准元数据",
+          "url": "https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=3AB693FAFF5D9716DF61C61D6FD2187A"
+        }
+      ],
+      "scope_note_zh": "测试条件、标准版本入口，不等于所有实车无条件安全",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S13",
+      "links": [
+        {
+          "title": "米其林轮胎寿命说明",
+          "url": "https://www.michelin.com.cn/auto/how-often-change-tires/index.html"
+        }
+      ],
+      "scope_note_zh": "厂商关于压力、磨损、使用条件的背景；具体高温命题另核验",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S14",
+      "links": [
+        {
+          "title": "电动自行车产品安全问答",
+          "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/xwxcs/art/2025/art_c035a1dc43f7458694f27863280fb800.html"
+        }
+      ],
+      "scope_note_zh": "技术背景，具体电池充电/混用命题未在本轮确认",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S15",
+      "links": [
+        {
+          "title": "彩云与地震说法核查，2025-08-26",
+          "url": "https://www.piyao.org.cn/20250826/1e2e4d405e3448b2a4af4818772fe9e3/c.html"
+        }
+      ],
+      "scope_note_zh": "云彩说法入口，只取科学部分",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S16",
+      "links": [
+        {
+          "title": "地震预测与预警科普",
+          "url": "https://www.piyao.org.cn/2022-01/06/c_1211519105.htm"
+        }
+      ],
+      "scope_note_zh": "概念背景，不采重大灾害的责任或治理争议",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S17",
+      "links": [
+        {
+          "title": "中国天气网龙卷风科普",
+          "url": "https://hlj.weather.com.cn/qxkp/06/4240849.shtml"
+        }
+      ],
+      "scope_note_zh": "风切变、形成与尺度，排除灾情个案",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S18",
+      "links": [
+        {
+          "title": "中国天气网冷涡与强对流解释",
+          "url": "https://news.weather.com.cn/2025/05/4182700.shtml"
+        }
+      ],
+      "scope_note_zh": "气象机制背景，不赋给任意日期预报真值",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S19",
+      "links": [
+        {
+          "title": "NASA 月亮错觉",
+          "url": "https://science.nasa.gov/solar-system/moon/the-moon-illusion-why-does-the-moon-look-so-big-sometimes/"
+        },
+        {
+          "title": "超级月亮",
+          "url": "https://science.nasa.gov/moon/supermoons/"
+        }
+      ],
+      "scope_note_zh": "视角与轨道条件背景；不采本窗口后的未发生观测",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S20",
+      "links": [
+        {
+          "title": "NASA 蓝月问答",
+          "url": "https://science.nasa.gov/solar-system/moon/super-blue-moons-your-questions-answered/"
+        }
+      ],
+      "scope_note_zh": "名称与颜色的区别，具体照片来源另核验",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S21",
+      "links": [
+        {
+          "title": "月食颜色科普，2026-03-03",
+          "url": "https://www.piyao.org.cn/20260303/0db7d77ca492495cb81c0e6db08d7c5f/c.html"
+        }
+      ],
+      "scope_note_zh": "只用物理颜色解释，不采迷信、宗教或群体偏见内容",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S22",
+      "links": [
+        {
+          "title": "NASA Night Sky Network 流星雨观测资料",
+          "url": "https://nightsky.jpl.nasa.gov/documents/2121/MeteorShowersHandout2025.pdf"
+        }
+      ],
+      "scope_note_zh": "观测条件背景，不能当每地实测数量",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S23",
+      "links": [
+        {
+          "title": "NASA 极光肉眼与照片",
+          "url": "https://science.nasa.gov/solar-system/skywatching/night-sky-network/nsn-night-lights/"
+        }
+      ],
+      "scope_note_zh": "肉眼、曝光和颜色背景，具体照片另核验",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S24",
+      "links": [
+        {
+          "title": "中科院蓝眼泪监测研究介绍",
+          "url": "https://english.cas.cn/newsroom/research-news/202602/t20260213_1150948.shtml"
+        }
+      ],
+      "scope_note_zh": "自然发光现象背景，不自动提供毒性或任意视频真值",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S25",
+      "links": [
+        {
+          "title": "科普中国绿植防辐射核查",
+          "url": "https://piyao.kepuchina.cn/h5/rumordetail?id=eyko"
+        }
+      ],
+      "scope_note_zh": "绿植/仙人掌说法入口",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S26",
+      "links": [
+        {
+          "title": "科普中国蜉蝣生命周期核查",
+          "url": "https://piyao.kepuchina.cn/h5/rumordetail?id=wpzq"
+        }
+      ],
+      "scope_note_zh": "成虫期与全生命周期区分",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S27",
+      "links": [
+        {
+          "title": "中科院动物所甲虫颜色研究",
+          "url": "https://ioz.cas.cn/gb2018/xwdt/kyjz/202508/t20250811_7903297.html"
+        }
+      ],
+      "scope_note_zh": "结构色/色素背景，不向人群身份作类比",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S28",
+      "links": [
+        {
+          "title": "超声波驱蚊说法核查，2026-07-06",
+          "url": "https://www.piyao.org.cn/20260706/d2416b58e482464ba47f51f82eeca9e4/c.html"
+        }
+      ],
+      "scope_note_zh": "对应产品说法入口，不采页面其他疾病个案",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S29",
+      "links": [
+        {
+          "title": "Google DeepMind SynthID 官方说明",
+          "url": "https://deepmind.google/models/synthid/"
+        }
+      ],
+      "scope_note_zh": "数字水印机制背景，不是所有 AI 生成物的通用真伪标签",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S30",
+      "links": [
+        {
+          "title": "AFP 罕见昆虫视频核查，2025-04-04",
+          "url": "https://factcheck.afp.com/doc.afp.com.38MT862"
+        }
+      ],
+      "scope_note_zh": "莲花螳螂类具体传播入口，只记录必要书目与短摘录",
+      "checked_on": "2026-10-25"
+    },
+    {
+      "source_id": "S31",
+      "links": [
+        {
+          "title": "NASA 手机天文摄影说明",
+          "url": "https://science.nasa.gov/solar-system/skywatching/night-sky-network/astrophotography-with-your-smartphone/"
+        }
+      ],
+      "scope_note_zh": "曝光、处理和实拍背景，不说明所有动物或风景影像真伪",
+      "checked_on": "2026-10-25"
+    }
+  ]
+}
